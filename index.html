@@ -220,6 +220,74 @@
     }
     .reference-item a { word-break: break-all; }
 
+    /* ── PRODUCT CARDS ── */
+    .products-section { padding: 1.4rem 0 .5rem; }
+    .products-section h2 { margin-bottom: 1.1rem; }
+    .product-grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+    .product-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--r-lg); box-shadow: var(--sh-sm);
+      display: flex; flex-direction: column;
+      transition: box-shadow .2s, border-color .2s;
+    }
+    .product-card:hover { box-shadow: var(--sh-md); border-color: var(--accent); }
+    .product-card-top {
+      padding: 1.1rem 1.3rem .7rem;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: flex-start; gap: .75rem;
+    }
+    .product-icon {
+      width: 2.4rem; height: 2.4rem; flex-shrink: 0;
+      border-radius: var(--r-sm);
+      background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 15%, var(--surface)), color-mix(in srgb, var(--accent) 5%, var(--surface)));
+      display: grid; place-items: center;
+    }
+    .product-brand { font-size: .72rem; font-weight: 700; letter-spacing: .08em; color: var(--faint); text-transform: uppercase; margin-bottom: .18rem; }
+    .product-name { font-weight: 700; font-size: .98rem; line-height: 1.25; }
+    .product-body { padding: .75rem 1.3rem; font-size: .88rem; color: var(--muted); line-height: 1.6; flex: 1; }
+    .product-body p + p { margin-top: .5rem; }
+    .product-footer { padding: .7rem 1.3rem 1.1rem; }
+    .product-link {
+      display: inline-flex; align-items: center; gap: .4rem;
+      color: var(--accent); font-size: .875rem; font-weight: 500;
+      text-decoration: none; border-bottom: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+      transition: border-color .2s;
+    }
+    .product-link:hover { border-color: var(--accent); }
+    .product-tag {
+      display: inline-block; font-size: .72rem; font-weight: 600;
+      padding: .15rem .5rem; border-radius: var(--r-full);
+      background: color-mix(in srgb, var(--accent) 12%, var(--surface-2));
+      color: var(--accent); margin-bottom: .5rem;
+    }
+    /* ── FLOSS GUIDE TABLE ── */
+    .floss-guide {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--r-lg); box-shadow: var(--sh-sm);
+      overflow: hidden; margin-top: .5rem;
+    }
+    .floss-guide table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+    .floss-guide thead { background: color-mix(in srgb, var(--accent) 10%, var(--surface-2)); }
+    .floss-guide th { padding: .75rem 1rem; text-align: left; font-weight: 700; color: var(--accent); }
+    .floss-guide td { padding: .65rem 1rem; border-top: 1px solid var(--border); vertical-align: top; }
+    .floss-guide tr:hover td { background: var(--surface-2); }
+    /* ── VIDEO BANNER ── */
+    .video-banner {
+      background: linear-gradient(120deg, color-mix(in srgb, var(--accent) 14%, var(--surface)), color-mix(in srgb, var(--blue) 10%, var(--surface)));
+      border: 1.5px solid color-mix(in srgb, var(--accent) 30%, var(--border));
+      border-radius: var(--r-lg); padding: 1.6rem 2rem;
+      display: flex; align-items: center; gap: 1.5rem;
+      margin-top: 1.4rem; text-decoration: none; color: inherit;
+      transition: box-shadow .2s, border-color .2s;
+    }
+    .video-banner:hover { box-shadow: var(--sh-md); border-color: var(--accent); }
+    .video-play {
+      width: 3.5rem; height: 3.5rem; flex-shrink: 0; border-radius: 50%;
+      background: var(--accent); display: grid; place-items: center;
+      box-shadow: 0 4px 16px color-mix(in srgb, var(--accent) 40%, transparent);
+    }
+    .video-text strong { display: block; font-size: 1.1rem; margin-bottom: .2rem; }
+    .video-text span { color: var(--muted); font-size: .9rem; }
     /* ── FOOTER ── */
     footer { padding: 2.5rem 0 3.5rem; color: var(--muted); font-size: .9rem; border-top: 1px solid var(--border); margin-top: 1rem; }
 
@@ -1318,6 +1386,137 @@
     }
   };
 
+
+  /* ── PRODUCTS DATA ── */
+  const PRODUCTS = {
+    sl: {
+      section_title: 'Priporočeni izdelki',
+      floss_title: 'Katera nitka kdaj?',
+      video_title: 'Video navodila za čiščenje',
+      video_sub: 'Curaprox video priročniki za pravilno tehniko — korak za korakom',
+      floss_cols: ['Situacija', 'Priporočena nitka', 'Zakaj'],
+      floss_rows: [
+        ['Ozki interdentalni prostori', 'Curaprox DF 820', 'Ultra tanka PTFE nitka (35 m), drsi brez napora celo skozi najtesnejše stike'],
+        ['Pod mostičkom in ortodontskimi aparati', 'Oral-B Super Floss', 'Ima trši vodiln konec, s katerim ga zlahka peljete pod mostiček ali žico. Mehki del nato očisti pod mostičkom in ob dlesni.'],
+        ['Pod mostičkom in vsadki — alternativa', 'Curaprox DF 846 Implant Saver', 'Posebej nežna, idealna za vsadke in mostičke. Ohrani mehkost in ne draži dlesni.'],
+      ],
+      products: [
+        {
+          brand: 'Elmex', icon: '🦷',
+          tag: 'Skelenje na hladno',
+          name: 'Sensitive Professional',
+          desc: 'Ko se ta pasta uporablja točno po navodilih, je klinično dokazano učinkovita proti skelenju zob na hladno. Aktivna sestavina zamaši dentinske tubule in preprečuje prenos bolečinskih dražljajev.',
+          url: 'https://www.elmex.si/products-range/sensitive/elmex-sensitive-professional-toothpaste',
+          link_label: 'Več na elmex.si'
+        },
+        {
+          brand: 'Elmex', icon: '🛡️',
+          tag: 'Dvojno delovanje',
+          name: 'Anti-Caries Professional',
+          desc: 'Do 4× močnejša remineralizacija korenin in hkrati nevtralizacija kisline, ki jo proizvajajo kariogene bakterije. Zato deluje na dveh ravneh: gradi in ščiti.',
+          url: 'https://www.elmex.si/products-range/caries-protection/elmex-anti-caries-professional',
+          link_label: 'Več na elmex.si'
+        },
+        {
+          brand: 'Curaprox', icon: '🌿',
+          tag: 'Vnetje dlesni',
+          name: 'Perio Plus Support (pasta)',
+          desc: 'Zobna pasta z 0,09 % klorheksidinom in aktivnim kisikom — za kratkoročno podporo pri pomiritvi simptomov vnetih dlesni. Idealno v kombinaciji z ustno vodico iz kolekcije Perio Plus.',
+          url: 'https://curaprox.si/zobne-paste/posebne-zobne-paste-in-ustne-vode/zobna-pasta-perio-plus-support-75-ml-p269',
+          link_label: 'Več na curaprox.si'
+        },
+        {
+          brand: 'Curaprox', icon: '💧',
+          tag: 'Vnetje dlesni',
+          name: 'Perio Plus ustne vodice (4 intenzivnosti)',
+          desc: 'Kolekcija štirih ustnih vodic z različno koncentracijo klorheksidina — od vzdrževalne do intenzivne nege. Izbira moči je odvisna od stopnje vnetja in navodil zobozdravnika. Deluje dobro v kombinaciji s Perio Plus Support pasto.',
+          url: 'https://curaprox.si/info/uporabni-pripomocki/perio-plus',
+          link_label: 'Oglejte si kolekcijo'
+        },
+        {
+          brand: 'Curaprox', icon: '🪥',
+          tag: 'Nega proteze',
+          name: 'BDC dnevni gel za protezo',
+          desc: 'Nežen dnevni gel za mehansko čiščenje proteze. Snov je brez abrazivnih delcev in ne poškoduje gladke površine proteze — kar je ključno za preprečevanje nabiranje oblog.',
+          url: 'https://curaprox.si/izdelki-po-potrebah/nega-zobnih-protez-in-vsadkov/bdc-100-dnevni-gel-p23',
+          link_label: 'Več na curaprox.si'
+        },
+        {
+          brand: 'Curaprox', icon: '🫧',
+          tag: 'Nega proteze',
+          name: 'BDC ščetka za protezo',
+          desc: 'Posebej oblikovana ščetka z dvema vrstama ščetin za čiščenje vseh površin proteze — zunanjih in notranjih. Primerna za dnevno čiščenje skupaj z BDC gelom.',
+          url: 'https://curaprox.si/izdelki-po-potrebah/nega-zobnih-protez-in-vsadkov/scetka-za-ciscenje-proteze-bdc-p652#/254-bdc_brush_colors-bela',
+          link_label: 'Več na curaprox.si'
+        }
+      ]
+    },
+    en: {
+      section_title: 'Recommended products',
+      floss_title: 'Which floss for which situation?',
+      video_title: 'Video instructions for cleaning',
+      video_sub: 'Curaprox video guides for correct technique — step by step',
+      floss_cols: ['Situation', 'Recommended floss', 'Why'],
+      floss_rows: [
+        ['Tight interdental spaces', 'Curaprox DF 820', 'Ultra-thin PTFE floss (35 m), glides effortlessly through even the tightest contacts'],
+        ['Under bridges and orthodontic appliances', 'Oral-B Super Floss', 'Has a stiff leader end to guide it under a bridge or wire; the spongy section then cleans under the pontic and along the gumline.'],
+        ['Under bridges and implants — alternative', 'Curaprox DF 846 Implant Saver', 'Extra gentle, ideal for implants and bridges. Stays soft and does not irritate the gum.'],
+      ],
+      products: [
+        { brand:'Elmex', icon:'🦷', tag:'Cold sensitivity', name:'Sensitive Professional', desc:'When used exactly as directed, this paste is clinically proven effective against tooth sensitivity to cold. The active ingredient seals dentinal tubules and blocks pain stimuli.', url:'https://www.elmex.si/products-range/sensitive/elmex-sensitive-professional-toothpaste', link_label:'More at elmex.si' },
+        { brand:'Elmex', icon:'🛡️', tag:'Dual action', name:'Anti-Caries Professional', desc:'Up to 4× stronger root remineralisation and simultaneous neutralisation of acid produced by cariogenic bacteria — a two-in-one preventive effect.', url:'https://www.elmex.si/products-range/caries-protection/elmex-anti-caries-professional', link_label:'More at elmex.si' },
+        { brand:'Curaprox', icon:'🌿', tag:'Gum inflammation', name:'Perio Plus Support (paste)', desc:'Toothpaste with 0.09% chlorhexidine and active oxygen for short-term support when soothing inflamed gums. Best used together with a Perio Plus mouthrinse.', url:'https://curaprox.si/zobne-paste/posebne-zobne-paste-in-ustne-vode/zobna-pasta-perio-plus-support-75-ml-p269', link_label:'More at curaprox.si' },
+        { brand:'Curaprox', icon:'💧', tag:'Gum inflammation', name:'Perio Plus mouthrinses (4 strengths)', desc:'A range of four mouthrinses with varying chlorhexidine concentrations — from maintenance to intensive care. Strength is chosen based on inflammation severity and professional advice.', url:'https://curaprox.si/info/uporabni-pripomocki/perio-plus', link_label:'View the collection' },
+        { brand:'Curaprox', icon:'🪥', tag:'Denture care', name:'BDC daily gel for dentures', desc:'Gentle daily gel for mechanical denture cleaning. Contains no abrasive particles and does not scratch the smooth denture surface — which is key for preventing future plaque build-up.', url:'https://curaprox.si/izdelki-po-potrebah/nega-zobnih-protez-in-vsadkov/bdc-100-dnevni-gel-p23', link_label:'More at curaprox.si' },
+        { brand:'Curaprox', icon:'🫧', tag:'Denture care', name:'BDC denture brush', desc:'Specially designed brush with two types of bristles for cleaning all denture surfaces — inside and out. Ideal for daily use together with BDC gel.', url:'https://curaprox.si/izdelki-po-potrebah/nega-zobnih-protez-in-vsadkov/scetka-za-ciscenje-proteze-bdc-p652#/254-bdc_brush_colors-bela', link_label:'More at curaprox.si' }
+      ]
+    },
+    hr: {
+      section_title: 'Preporučeni proizvodi',
+      floss_title: 'Koji konac i kada?',
+      video_title: 'Video upute za čišćenje',
+      video_sub: 'Curaprox video priručnici za pravilnu tehniku — korak po korak',
+      floss_cols: ['Situacija', 'Preporučeni konac', 'Zašto'],
+      floss_rows: [
+        ['Uski interdentalni prostori', 'Curaprox DF 820', 'Ultra tanki PTFE konac (35 m), klizi bez napora čak i kroz najtješnje kontakte'],
+        ['Ispod mosta i ortodontskih aparata', 'Oral-B Super Floss', 'Ima tvrđi vodeći kraj kojim ga lako uvedete ispod mosta ili žice. Meki dio zatim čisti ispod mosta i uz desni.'],
+        ['Ispod mosta i implantata — alternativa', 'Curaprox DF 846 Implant Saver', 'Posebno nježan, idealan za implantate i mostove. Ostaje mekan i ne iritira desni.'],
+      ],
+      products: [
+        { brand:'Elmex', icon:'🦷', tag:'Osjetljivost na hladno', name:'Sensitive Professional', desc:'Kada se koristi točno prema uputama, klinički je dokazano učinkovit protiv osjetljivosti zuba na hladno. Aktivna tvar zatvara dentinske tubule i sprječava prijenos bolnih podražaja.', url:'https://www.elmex.si/products-range/sensitive/elmex-sensitive-professional-toothpaste', link_label:'Više na elmex.si' },
+        { brand:'Elmex', icon:'🛡️', tag:'Dvojno djelovanje', name:'Anti-Caries Professional', desc:'Do 4× jača remineralizacija korijena i istovremena neutralizacija kiseline bakterija — dvostrano preventivno djelovanje.', url:'https://www.elmex.si/products-range/caries-protection/elmex-anti-caries-professional', link_label:'Više na elmex.si' },
+        { brand:'Curaprox', icon:'🌿', tag:'Upala desni', name:'Perio Plus Support (pasta)', desc:'Pasta s 0,09% klorheksidinom za kratkotrajnu potporu pri smirenju upaljenih desni. Idealno u kombinaciji s Perio Plus vodenom otopinom.', url:'https://curaprox.si/zobne-paste/posebne-zobne-paste-in-ustne-vode/zobna-pasta-perio-plus-support-75-ml-p269', link_label:'Više na curaprox.si' },
+        { brand:'Curaprox', icon:'💧', tag:'Upala desni', name:'Perio Plus vodice (4 intenziteta)', desc:'Kolekcija četiriju vodica s različitim koncentracijama klorheksidina — od održavanja do intenzivne njege. Odabir ovisi o stupnju upale i savjetu stomatologa.', url:'https://curaprox.si/info/uporabni-pripomocki/perio-plus', link_label:'Pogledajte kolekciju' },
+        { brand:'Curaprox', icon:'🪥', tag:'Njega proteze', name:'BDC dnevni gel za protezu', desc:'Nježni dnevni gel za mehaničko čišćenje proteze. Bez abrazivnih čestica — ne grebe glatku površinu proteze.', url:'https://curaprox.si/izdelki-po-potrebah/nega-zobnih-protez-in-vsadkov/bdc-100-dnevni-gel-p23', link_label:'Više na curaprox.si' },
+        { brand:'Curaprox', icon:'🫧', tag:'Njega proteze', name:'BDC četkica za protezu', desc:'Posebno dizajnirana četkica s dvije vrste vlakana za čišćenje svih površina proteze. Idealna uz BDC gel.', url:'https://curaprox.si/izdelki-po-potrebah/nega-zobnih-protez-in-vsadkov/scetka-za-ciscenje-proteze-bdc-p652#/254-bdc_brush_colors-bela', link_label:'Više na curaprox.si' }
+      ]
+    },
+    de: {
+      section_title: 'Empfohlene Produkte',
+      floss_title: 'Welche Zahnseide wann?',
+      video_title: 'Video-Anleitungen zur Reinigung',
+      video_sub: 'Curaprox Videoanleitungen für die richtige Technik — Schritt für Schritt',
+      floss_cols: ['Situation', 'Empfohlene Zahnseide', 'Warum'],
+      floss_rows: [
+        ['Enge Zahnzwischenräume', 'Curaprox DF 820', 'Ultradünner PTFE-Faden (35 m), gleitet mühelos durch engste Kontaktpunkte'],
+        ['Unter Brücken und Zahnspangen', 'Oral-B Super Floss', 'Hat ein steifes Führungsende, mit dem es unter Brücke oder Draht geführt wird; der weiche Teil reinigt dann darunter.'],
+        ['Unter Brücken und Implantaten — Alternative', 'Curaprox DF 846 Implant Saver', 'Besonders sanft, ideal für Implantate und Brücken. Bleibt weich und reizt das Zahnfleisch nicht.'],
+      ],
+      products: [
+        { brand:'Elmex', icon:'🦷', tag:'Kälteempfindlichkeit', name:'Sensitive Professional', desc:'Bei exakter Anwendung nach Gebrauchsanweisung klinisch bewiesen wirksam gegen Zahnempfindlichkeit bei Kälte. Versiegelt Dentinkanälchen und blockiert Schmerzreize.', url:'https://www.elmex.si/products-range/sensitive/elmex-sensitive-professional-toothpaste', link_label:'Mehr auf elmex.si' },
+        { brand:'Elmex', icon:'🛡️', tag:'Doppelwirkung', name:'Anti-Caries Professional', desc:'Bis zu 4× stärkere Remineralisation der Zahnwurzeln und gleichzeitige Neutralisation der von Bakterien produzierten Säure.', url:'https://www.elmex.si/products-range/caries-protection/elmex-anti-caries-professional', link_label:'Mehr auf elmex.si' },
+        { brand:'Curaprox', icon:'🌿', tag:'Zahnfleischentzündung', name:'Perio Plus Support (Zahncreme)', desc:'Zahncreme mit 0,09% Chlorhexidin zur kurzfristigen Unterstützung bei gereiztem Zahnfleisch. Am besten kombiniert mit einer Perio Plus Spülung.', url:'https://curaprox.si/zobne-paste/posebne-zobne-paste-in-ustne-vode/zobna-pasta-perio-plus-support-75-ml-p269', link_label:'Mehr auf curaprox.si' },
+        { brand:'Curaprox', icon:'💧', tag:'Zahnfleischentzündung', name:'Perio Plus Mundspülungen (4 Stärken)', desc:'Vier Mundspülungen mit verschiedenen Chlorhexidin-Konzentrationen. Die Stärke richtet sich nach dem Entzündungsgrad und der Empfehlung des Zahnarztes.', url:'https://curaprox.si/info/uporabni-pripomocki/perio-plus', link_label:'Kollektion ansehen' },
+        { brand:'Curaprox', icon:'🪥', tag:'Prothesenpflege', name:'BDC Tagesreinigungsgel für Prothesen', desc:'Sanftes Tagesreinigungsgel ohne Schleifmittel — schützt die glatte Prothesenoberfläche und beugt Plaqueanlagerungen vor.', url:'https://curaprox.si/izdelki-po-potrebah/nega-zobnih-protez-in-vsadkov/bdc-100-dnevni-gel-p23', link_label:'Mehr auf curaprox.si' },
+        { brand:'Curaprox', icon:'🫧', tag:'Prothesenpflege', name:'BDC Prothesenbürste', desc:'Speziell entwickelte Bürste mit zwei Borstentypen für alle Prothesenoberflächen. Ideal täglich zusammen mit BDC Gel verwenden.', url:'https://curaprox.si/izdelki-po-potrebah/nega-zobnih-protez-in-vsadkov/scetka-za-ciscenje-proteze-bdc-p652#/254-bdc_brush_colors-bela', link_label:'Mehr auf curaprox.si' }
+      ]
+    }
+  };
+  // Fallback for languages without full product translation — use SL
+  ['sr','it','sq','ar','mk','hu','ru','uk','st','ko','pr','pm','lj'].forEach(c => {
+    if(!PRODUCTS[c]) PRODUCTS[c] = PRODUCTS.sl;
+  });
+
   /* Dialectal variants inherit from Slovenian */
   ['st','ko','pr','pm','lj'].forEach(code => {
     const titleMap = {
@@ -1369,6 +1568,63 @@
       </div>
     </div>
   </section>`;
+
+
+  function buildProductCard(p) {
+    return `<article class="product-card">
+      <div class="product-card-top">
+        <div class="product-icon" aria-hidden="true">${p.icon}</div>
+        <div>
+          <div class="product-brand">${p.brand}</div>
+          <div class="product-name">${p.name}</div>
+        </div>
+      </div>
+      <div class="product-body">
+        <span class="product-tag">${p.tag}</span>
+        ${p.desc.split('\n\n').map(t=>`<p>${t}</p>`).join('')}
+      </div>
+      <div class="product-footer">
+        <a class="product-link" href="${p.url}" target="_blank" rel="noopener noreferrer">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          ${p.link_label}
+        </a>
+      </div>
+    </article>`;
+  }
+
+  function buildFlossRow(cols) {
+    return `<tr>${cols.map(c=>`<td>${c}</td>`).join('')}</tr>`;
+  }
+
+  function buildProductsSection(langCode) {
+    const pd = PRODUCTS[langCode] || PRODUCTS.sl;
+    const productsHTML = pd.products.map(buildProductCard).join('');
+    const flossRowsHTML = pd.floss_rows.map(r => buildFlossRow(r)).join('');
+    const flossHeadHTML = pd.floss_cols.map(c=>`<th>${c}</th>`).join('');
+    return `
+      <section class="products-section container">
+        <h2>${pd.section_title}</h2>
+        <div class="product-grid">${productsHTML}</div>
+        <h3 style="margin-top:2rem;margin-bottom:.6rem">${pd.floss_title}</h3>
+        <div class="floss-guide">
+          <table>
+            <thead><tr>${flossHeadHTML}</tr></thead>
+            <tbody>${flossRowsHTML}</tbody>
+          </table>
+        </div>
+        <a class="video-banner" href="https://curaprox.si/blog/post/video-navodila" target="_blank" rel="noopener noreferrer">
+          <div class="video-play" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          </div>
+          <div class="video-text">
+            <strong>${pd.video_title}</strong>
+            <span>${pd.video_sub}</span>
+          </div>
+          <svg style="margin-left:auto;flex-shrink:0;color:var(--accent)" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </a>
+      </section>
+    `;
+  }
 
   /* ── RENDER ENGINE ── */
   function buildCard(c, size) {
@@ -1451,6 +1707,7 @@
       ${cards2HTML}
       ${cards3HTML}
       ${cards2bHTML}
+      ${buildProductsSection(langCode)}
       ${refHTML}
     `;
 
