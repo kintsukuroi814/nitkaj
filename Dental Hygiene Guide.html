@@ -1,0 +1,1535 @@
+<!DOCTYPE html>
+<html lang="sl" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Navodila za ustno higieno</title>
+  <meta name="description" content="Večjezična stran z navodili za paciente o čiščenju medzobnih prostorov, mostičkov, protez in teleskopskih protez." />
+  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&f[]=boska@500,700&display=swap" rel="stylesheet">
+  <style>
+    /* ── TOKENS ── */
+    :root, [data-theme="light"] {
+      --bg: #f4f8f7; --surface: #ffffff; --surface-2: #edf4f2; --border: #cddbd7;
+      --text: #1a2926; --muted: #4d6b65; --faint: #7a9992;
+      --accent: #00857a; --accent-h: #006b62; --blue: #1a6fa8;
+      --sh-sm: 0 2px 10px rgba(0,120,100,.07); --sh-md: 0 16px 40px rgba(0,80,70,.10);
+      --r-sm:.5rem; --r-md:.9rem; --r-lg:1.4rem; --r-full:9999px;
+      --font-body:'Satoshi',system-ui,sans-serif; --font-display:'Boska',Georgia,serif;
+      --content:1140px;
+      --bg-orb-1: rgba(0,133,122,.13); --bg-orb-2: rgba(26,111,168,.10); --bg-orb-3: rgba(0,133,122,.07);
+    }
+    [data-theme="dark"] {
+      --bg: #0f1a18; --surface: #172220; --surface-2: #1e2e2b; --border: #2a3d39;
+      --text: #ddeae7; --muted: #8ab5ae; --faint: #5a8078;
+      --accent: #3fbfb4; --accent-h: #5ccfc4; --blue: #6aaed8;
+      --sh-sm: 0 2px 10px rgba(0,0,0,.3); --sh-md: 0 16px 40px rgba(0,0,0,.45);
+      --bg-orb-1: rgba(63,191,180,.10); --bg-orb-2: rgba(106,174,216,.08); --bg-orb-3: rgba(63,191,180,.05);
+    }
+
+    /* ── RESET ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+    body {
+      font-family: var(--font-body); font-size: clamp(1rem,.96rem + .2vw,1.125rem);
+      line-height: 1.7; color: var(--text);
+      background: var(--bg); min-height: 100vh;
+      transition: background .4s, color .4s;
+      overflow-x: hidden;
+    }
+    a { color: var(--accent); }
+    img, svg { display: block; max-width: 100%; height: auto; }
+    button, select { font: inherit; cursor: pointer; }
+
+    /* ── ANIMATED BACKGROUND ── */
+    .bg-canvas {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      overflow: hidden;
+    }
+    .bg-orb {
+      position: absolute; border-radius: 50%;
+      filter: blur(80px);
+      animation: orbFloat linear infinite;
+      will-change: transform;
+    }
+    .orb-1 {
+      width: min(600px, 60vw); height: min(600px, 60vw);
+      background: var(--bg-orb-1);
+      top: -10%; left: -10%;
+      animation-duration: 28s;
+      animation-name: orbFloat1;
+    }
+    .orb-2 {
+      width: min(500px, 50vw); height: min(500px, 50vw);
+      background: var(--bg-orb-2);
+      bottom: -5%; right: -5%;
+      animation-duration: 34s;
+      animation-name: orbFloat2;
+    }
+    .orb-3 {
+      width: min(400px, 45vw); height: min(400px, 45vw);
+      background: var(--bg-orb-3);
+      top: 40%; left: 40%;
+      animation-duration: 22s;
+      animation-name: orbFloat3;
+    }
+    @keyframes orbFloat1 {
+      0%   { transform: translate(0,0) scale(1); }
+      33%  { transform: translate(8vw, 6vh) scale(1.08); }
+      66%  { transform: translate(3vw, 14vh) scale(.95); }
+      100% { transform: translate(0,0) scale(1); }
+    }
+    @keyframes orbFloat2 {
+      0%   { transform: translate(0,0) scale(1); }
+      33%  { transform: translate(-6vw,-8vh) scale(1.1); }
+      66%  { transform: translate(-12vw,-3vh) scale(.92); }
+      100% { transform: translate(0,0) scale(1); }
+    }
+    @keyframes orbFloat3 {
+      0%   { transform: translate(0,0) scale(1); }
+      50%  { transform: translate(-8vw, 8vh) scale(1.15); }
+      100% { transform: translate(0,0) scale(1); }
+    }
+
+    /* subtle bubbles — tooth-like circles floating up */
+    .bubbles { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+    .bubble {
+      position: absolute; border-radius: 50%;
+      border: 1.5px solid color-mix(in srgb, var(--accent) 22%, transparent);
+      animation: bubbleRise linear infinite;
+      bottom: -60px;
+    }
+    @keyframes bubbleRise {
+      0%   { transform: translateY(0) scale(1); opacity: 0; }
+      10%  { opacity: 1; }
+      85%  { opacity: .6; }
+      100% { transform: translateY(-110vh) scale(1.1); opacity: 0; }
+    }
+
+    /* ── LAYOUT ── */
+    .wrap { position: relative; z-index: 1; }
+    .container { width: min(calc(100% - 2rem), var(--content)); margin-inline: auto; }
+
+    /* ── HEADER ── */
+    header {
+      position: sticky; top: 0; z-index: 40;
+      background: color-mix(in srgb, var(--bg) 88%, transparent);
+      backdrop-filter: blur(14px) saturate(1.6);
+      border-bottom: 1px solid var(--border);
+      transition: background .4s;
+    }
+    .topbar {
+      display: flex; justify-content: space-between; align-items: center;
+      gap: 1rem; padding: .85rem 0;
+    }
+    .brand {
+      display: flex; align-items: center; gap: .75rem;
+      text-decoration: none; color: inherit;
+    }
+    .brand-mark {
+      width: 2.2rem; height: 2.2rem; border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--blue));
+      display: grid; place-items: center;
+      box-shadow: var(--sh-sm);
+      flex-shrink: 0;
+    }
+    .brand strong { display: block; font-size: clamp(.9rem,.85rem + .2vw,1.05rem); }
+    .brand small { display: block; color: var(--muted); font-size: .8rem; }
+    .top-controls { display: flex; align-items: center; gap: .55rem; flex-wrap: wrap; }
+    .btn-compact {
+      border: 1px solid var(--border); background: var(--surface); color: var(--text);
+      border-radius: var(--r-full); padding: .55rem .95rem;
+      font-size: .875rem; text-decoration: none; white-space: nowrap;
+      transition: border-color .2s, background .2s;
+    }
+    .btn-compact:hover { border-color: var(--accent); }
+    .lang-select { min-width: 200px; }
+
+    /* ── HERO ── */
+    .hero { padding: clamp(2.5rem,8vw,5.5rem) 0 1.5rem; }
+    .hero-grid { display: grid; grid-template-columns: 1.25fr .85fr; gap: 2.5rem; align-items: start; }
+    h1 {
+      font-family: var(--font-display); font-size: clamp(2.2rem,1.4rem + 2.2vw,3.5rem);
+      line-height: 1.1; max-width: 13ch; margin-bottom: .8rem;
+    }
+    h2 { font-size: clamp(1.4rem,1.1rem + .8vw,1.9rem); line-height: 1.18; margin-bottom: .6rem; }
+    h3 { font-size: clamp(1.1rem,.95rem + .5vw,1.35rem); line-height: 1.22; margin-bottom: .55rem; }
+    p { max-width: 72ch; }
+    .lede { color: var(--muted); max-width: 60ch; margin-top: .6rem; }
+
+    /* ── CARDS ── */
+    .card, .hero-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--r-lg); box-shadow: var(--sh-sm);
+      padding: 1.4rem 1.5rem;
+    }
+    .hero-card { background: color-mix(in srgb, var(--accent) 6%, var(--surface)); }
+    ul.clean { padding-left: 1.3rem; }
+    ul.clean li + li { margin-top: .5rem; }
+
+    /* ── STEPS ── */
+    .steps { list-style: none; counter-reset: step; margin-top: .8rem; }
+    .steps li {
+      display: flex; gap: .9rem; align-items: flex-start;
+      border-top: 1px solid var(--border); padding: .9rem 0;
+    }
+    .steps li:first-child { border-top: 0; padding-top: 0; }
+    .steps li::before {
+      counter-increment: step; content: counter(step);
+      width: 2rem; height: 2rem; flex: 0 0 2rem;
+      display: grid; place-items: center;
+      border-radius: 50%; background: var(--accent); color: #fff;
+      font-weight: 700; font-size: .9rem;
+    }
+
+    /* ── GRID ── */
+    section { padding: 1.1rem 0; }
+    .grid { display: grid; gap: 1.4rem; }
+    .three { grid-template-columns: repeat(3,1fr); }
+    .two   { grid-template-columns: repeat(2,1fr); }
+
+    /* ── ILLUSTRATION CARD ── */
+    .illus-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--r-lg); box-shadow: var(--sh-sm);
+      display: flex; flex-direction: column;
+    }
+    .illus-top {
+      padding: 1.8rem 2rem 1.2rem;
+      background: linear-gradient(150deg, color-mix(in srgb, var(--accent) 9%, var(--surface)), var(--surface));
+      border-radius: var(--r-lg) var(--r-lg) 0 0;
+      display: flex; justify-content: center;
+    }
+    .illus-top svg { width: 100%; max-width: 220px; height: auto; }
+    .illus-body { padding: 1.2rem 1.5rem 1.4rem; }
+
+    /* ── NOTE ── */
+    .note {
+      background: color-mix(in srgb, var(--accent) 8%, var(--surface-2));
+      border: 1px solid color-mix(in srgb, var(--accent) 25%, var(--border));
+      border-left: 3px solid var(--accent);
+      border-radius: var(--r-md); padding: 1rem 1.2rem;
+      margin-top: 1.2rem;
+    }
+
+    /* ── REFERENCES ── */
+    .reference-list { display: grid; gap: .8rem; margin-top: 1rem; }
+    .reference-item {
+      padding: .9rem 1.1rem; background: var(--surface);
+      border: 1px solid var(--border); border-radius: var(--r-md);
+      font-size: .88rem;
+    }
+    .reference-item a { word-break: break-all; }
+
+    /* ── FOOTER ── */
+    footer { padding: 2.5rem 0 3.5rem; color: var(--muted); font-size: .9rem; border-top: 1px solid var(--border); margin-top: 1rem; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .hero-grid, .three, .two { grid-template-columns: 1fr; }
+      .topbar { flex-direction: column; align-items: flex-start; }
+      .top-controls { width: 100%; }
+      .lang-select { flex: 1; min-width: 0; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ANIMATED BACKGROUND -->
+<div class="bg-canvas" aria-hidden="true">
+  <div class="bg-orb orb-1"></div>
+  <div class="bg-orb orb-2"></div>
+  <div class="bg-orb orb-3"></div>
+</div>
+<div class="bubbles" aria-hidden="true" id="bubbleContainer"></div>
+
+<div class="wrap">
+<header>
+  <div class="container topbar">
+    <a class="brand" href="#top" aria-label="Home">
+      <span class="brand-mark" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.9" stroke-linecap="round">
+          <path d="M12 3c-2.7 0-6 2-6 5.3 0 3.9 2.1 7.6 2.8 9.7.3.9 1.1 1.5 2.1 1.5h2.2c1 0 1.8-.6 2.1-1.5.7-2.1 2.8-5.8 2.8-9.7C18 5 14.7 3 12 3Z"/>
+          <path d="M9 10c.8.6 1.8.9 3 .9s2.2-.3 3-.9"/>
+        </svg>
+      </span>
+      <span>
+        <strong id="brand_title">Navodila za ustno higieno</strong>
+        <small id="brand_sub">mostički, medzobni prostori in proteze</small>
+      </span>
+    </a>
+    <div class="top-controls">
+      <label for="languageSelect" id="language_label" style="font-size:.875rem;color:var(--muted)">Jezik</label>
+      <select id="languageSelect" class="btn-compact lang-select" aria-label="Izbira jezika">
+        <option value="sl">🇸🇮 Slovenščina</option>
+        <option value="hr">🇭🇷 Hrvatski</option>
+        <option value="sr">🇷🇸 Srpski</option>
+        <option value="en">🇬🇧 English</option>
+        <option value="de">🇩🇪 Deutsch</option>
+        <option value="it">🇮🇹 Italiano</option>
+        <option value="sq">🇦🇱 Shqip</option>
+        <option value="ar">🇸🇦 العربية</option>
+        <option value="mk">🇲🇰 Македонски</option>
+        <option value="hu">🇭🇺 Magyar</option>
+        <option value="ru">🇷🇺 Русский</option>
+        <option value="uk">🇺🇦 Українська</option>
+        <option value="st">🌿 Štajerski</option>
+        <option value="ko">🌿 Koroški</option>
+        <option value="pr">🌿 Primorski</option>
+        <option value="pm">🌿 Prekmurski</option>
+        <option value="lj">🌿 Ljubljanski</option>
+      </select>
+      <a class="btn-compact" href="#reference" id="references_link">Reference</a>
+      <button class="btn-compact" type="button" id="themeBtn" aria-label="Preklopi temo">🌙</button>
+    </div>
+  </div>
+</header>
+
+<main id="main"></main>
+
+<footer>
+  <div class="container" id="footer_text">
+    Za vsa dodatna vprašanja se je treba posvetovati s strokovnjakom za dlesni in za preventivo (zobozdravnikom, ustnim higienikom, parodontologom).
+  </div>
+</footer>
+</div>
+
+<script>
+(function(){
+  /* ── BUBBLES ── */
+  const bc = document.getElementById('bubbleContainer');
+  for(let i=0;i<14;i++){
+    const b = document.createElement('div');
+    b.className = 'bubble';
+    const s = 10 + Math.random()*30;
+    b.style.cssText = `width:${s}px;height:${s}px;left:${Math.random()*100}%;animation-duration:${10+Math.random()*20}s;animation-delay:${Math.random()*18}s;`;
+    bc.appendChild(b);
+  }
+
+  /* ── THEME ── */
+  const root = document.documentElement;
+  const themeBtn = document.getElementById('themeBtn');
+  let theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  root.setAttribute('data-theme', theme);
+  const syncTheme = () => themeBtn.textContent = root.getAttribute('data-theme')==='dark' ? '☀️' : '🌙';
+  syncTheme();
+  themeBtn.addEventListener('click', ()=>{
+    root.setAttribute('data-theme', root.getAttribute('data-theme')==='dark'?'light':'dark');
+    syncTheme();
+  });
+
+  /* ── SVG ILLUSTRATIONS ── */
+  const SVG = {
+    interdental: `<svg viewBox="0 0 220 160" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <!-- Two teeth -->
+      <rect x="28" y="40" width="52" height="90" rx="12" fill="white" stroke="#cddbd7" stroke-width="2"/>
+      <rect x="28" y="40" width="52" height="20" rx="6" fill="#e8f5f3"/>
+      <!-- gap -->
+      <rect x="140" y="40" width="52" height="90" rx="12" fill="white" stroke="#cddbd7" stroke-width="2"/>
+      <rect x="140" y="40" width="52" height="20" rx="6" fill="#e8f5f3"/>
+      <!-- interdental brush -->
+      <rect x="97" y="72" width="26" height="5" rx="2.5" fill="#00857a"/>
+      <line x1="82" y1="74.5" x2="97" y2="74.5" stroke="#888" stroke-width="2.5" stroke-linecap="round"/>
+      <!-- bristles -->
+      <g stroke="#00857a" stroke-width="1.5" stroke-linecap="round">
+        <line x1="100" y1="69" x2="100" y2="64"/><line x1="100" y1="80" x2="100" y2="85"/>
+        <line x1="104" y1="68" x2="104" y2="63"/><line x1="104" y1="81" x2="104" y2="86"/>
+        <line x1="108" y1="69" x2="108" y2="64"/><line x1="108" y1="80" x2="108" y2="85"/>
+        <line x1="112" y1="68" x2="112" y2="63"/><line x1="112" y1="81" x2="112" y2="86"/>
+        <line x1="116" y1="69" x2="116" y2="64"/><line x1="116" y1="80" x2="116" y2="85"/>
+        <line x1="120" y1="68" x2="120" y2="63"/><line x1="120" y1="81" x2="120" y2="86"/>
+      </g>
+      <!-- plaque dots being removed -->
+      <circle cx="134" cy="72" r="3" fill="#00857a" opacity=".4"/>
+      <circle cx="138" cy="76" r="2" fill="#00857a" opacity=".3"/>
+    </svg>`,
+
+    bridge: `<svg viewBox="0 0 220 160" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <!-- Left abutment tooth -->
+      <rect x="14" y="42" width="48" height="88" rx="11" fill="white" stroke="#cddbd7" stroke-width="2"/>
+      <rect x="14" y="42" width="48" height="18" rx="6" fill="#e8f5f3"/>
+      <!-- Bridge pontic -->
+      <rect x="62" y="58" width="96" height="72" rx="10" fill="#f0faf9" stroke="#cddbd7" stroke-width="2" stroke-dasharray="4 3"/>
+      <text x="110" y="100" text-anchor="middle" font-size="11" fill="#7a9992" font-family="Satoshi,sans-serif">mostiček</text>
+      <!-- Right abutment tooth -->
+      <rect x="158" y="42" width="48" height="88" rx="11" fill="white" stroke="#cddbd7" stroke-width="2"/>
+      <rect x="158" y="42" width="48" height="18" rx="6" fill="#e8f5f3"/>
+      <!-- Superfloss path -->
+      <path d="M 38 155 Q 110 125 182 155" stroke="#00857a" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="5 3" fill="none"/>
+      <!-- Arrow -->
+      <path d="M180 148 L182 155 L175 154" stroke="#00857a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    </svg>`,
+
+    denture: `<svg viewBox="0 0 220 160" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <!-- Denture base -->
+      <path d="M30 90 Q30 50 110 45 Q190 50 190 90 Q190 130 110 132 Q30 130 30 90Z" fill="#ffe0e0" stroke="#f5c6c6" stroke-width="2"/>
+      <!-- Teeth on denture -->
+      <g fill="white" stroke="#cddbd7" stroke-width="1.5">
+        <rect x="55" y="52" width="18" height="32" rx="5"/>
+        <rect x="75" y="48" width="20" height="36" rx="5"/>
+        <rect x="97" y="46" width="20" height="38" rx="5"/>
+        <rect x="119" y="48" width="20" height="36" rx="5"/>
+        <rect x="141" y="52" width="18" height="32" rx="5"/>
+      </g>
+      <!-- Denture brush -->
+      <rect x="78" y="112" width="64" height="12" rx="6" fill="#00857a"/>
+      <g stroke="white" stroke-width="1.2" stroke-linecap="round">
+        <line x1="84" y1="112" x2="84" y2="104"/><line x1="90" y1="112" x2="90" y2="104"/>
+        <line x1="96" y1="112" x2="96" y2="104"/><line x1="102" y1="112" x2="102" y2="104"/>
+        <line x1="108" y1="112" x2="108" y2="104"/><line x1="114" y1="112" x2="114" y2="104"/>
+        <line x1="120" y1="112" x2="120" y2="104"/><line x1="126" y1="112" x2="126" y2="104"/>
+									 <line x1="132" y1="112" x2="132" y2="104"/>
+      </g>
+      <!-- Handle -->
+      <rect x="142" y="115" width="40" height="6" rx="3" fill="#006b62"/>
+    </svg>`,
+
+    electric: `<svg viewBox="0 0 220 160" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <!-- Toothbrush handle -->
+      <rect x="95" y="100" width="28" height="55" rx="8" fill="linear-gradient(180deg,#00857a,#006b62)" stroke="#006b62" stroke-width="1.5"/>
+      <rect x="95" y="100" width="28" height="55" rx="8" fill="#00857a"/>
+      <rect x="100" y="108" width="18" height="8" rx="4" fill="#006b62" opacity=".5"/>
+      <!-- Brush head -->
+      <rect x="98" y="55" width="22" height="46" rx="6" fill="#e8f5f3" stroke="#cddbd7" stroke-width="1.5"/>
+      <ellipse cx="109" cy="66" rx="9" ry="6" fill="white" stroke="#cddbd7" stroke-width="1.5"/>
+      <!-- Bristles -->
+      <g stroke="#00857a" stroke-width="1.3" stroke-linecap="round">
+        <line x1="103" y1="66" x2="103" y2="56"/>
+        <line x1="107" y1="65" x2="107" y2="55"/>
+        <line x1="111" y1="65" x2="111" y2="55"/>
+        <line x1="115" y1="66" x2="115" y2="56"/>
+      </g>
+      <!-- Spin lines -->
+      <path d="M88 68 Q82 62 88 56" stroke="#00857a" stroke-width="1.5" stroke-linecap="round" fill="none" stroke-dasharray="3 2"/>
+      <path d="M130 68 Q136 62 130 56" stroke="#00857a" stroke-width="1.5" stroke-linecap="round" fill="none" stroke-dasharray="3 2"/>
+      <!-- Plaque removed -->
+      <circle cx="75" cy="75" r="4" fill="#ffd700" opacity=".5"/>
+      <circle cx="70" cy="65" r="3" fill="#ffd700" opacity=".35"/>
+      <circle cx="78" cy="60" r="2.5" fill="#ffd700" opacity=".25"/>
+      <!-- Tooth behind -->
+      <rect x="58" y="40" width="34" height="70" rx="10" fill="white" stroke="#cddbd7" stroke-width="2" opacity=".5"/>
+    </svg>`,
+
+    floss: `<svg viewBox="0 0 220 160" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <!-- Floss container -->
+      <rect x="70" y="20" width="80" height="55" rx="12" fill="#00857a" opacity=".15" stroke="#00857a" stroke-width="1.5"/>
+      <circle cx="110" cy="47" r="20" fill="#00857a" opacity=".2"/>
+      <circle cx="110" cy="47" r="12" fill="#00857a" opacity=".3"/>
+      <text x="110" y="52" text-anchor="middle" font-size="11" fill="#00857a" font-weight="700" font-family="Satoshi,sans-serif">floss</text>
+      <!-- Teeth -->
+      <rect x="20" y="68" width="44" height="72" rx="10" fill="white" stroke="#cddbd7" stroke-width="2"/>
+      <rect x="156" y="68" width="44" height="72" rx="10" fill="white" stroke="#cddbd7" stroke-width="2"/>
+      <!-- Floss between teeth -->
+      <path d="M64 100 L64 85 Q64 75 80 75 L110 75 L140 75 Q156 75 156 85 L156 100" stroke="#00857a" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+      <!-- Plaque spots -->
+      <circle cx="88" cy="90" r="3.5" fill="#00857a" opacity=".4"/>
+      <circle cx="110" cy="80" r="3" fill="#00857a" opacity=".3"/>
+      <circle cx="132" cy="90" r="3.5" fill="#00857a" opacity=".4"/>
+    </svg>`,
+
+    telescope: `<svg viewBox="0 0 220 160" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <!-- Primary telescope (in mouth) -->
+      <rect x="30" y="50" width="40" height="75" rx="9" fill="white" stroke="#cddbd7" stroke-width="2"/>
+      <!-- Secondary cap -->
+      <rect x="28" y="42" width="44" height="22" rx="8" fill="#e8f5f3" stroke="#00857a" stroke-width="1.5"/>
+      <text x="50" y="57" text-anchor="middle" font-size="9" fill="#00857a" font-family="Satoshi,sans-serif">1°</text>
+      <!-- Primary telescope right -->
+      <rect x="150" y="50" width="40" height="75" rx="9" fill="white" stroke="#cddbd7" stroke-width="2"/>
+      <rect x="148" y="42" width="44" height="22" rx="8" fill="#e8f5f3" stroke="#00857a" stroke-width="1.5"/>
+      <text x="170" y="57" text-anchor="middle" font-size="9" fill="#00857a" font-family="Satoshi,sans-serif">1°</text>
+      <!-- Denture frame with secondaries -->
+      <path d="M72 58 Q110 30 148 58" fill="none" stroke="#cddbd7" stroke-width="3" stroke-linecap="round"/>
+      <rect x="90" y="36" width="40" height="20" rx="8" fill="#ffe0e0" stroke="#f5c6c6" stroke-width="1.5"/>
+      <text x="110" y="50" text-anchor="middle" font-size="9" fill="#c0504d" font-family="Satoshi,sans-serif">2°</text>
+      <!-- Single tuft brush -->
+      <line x1="110" y1="115" x2="110" y2="145" stroke="#888" stroke-width="2" stroke-linecap="round"/>
+      <ellipse cx="110" cy="113" rx="5" ry="4" fill="#00857a"/>
+      <g stroke="white" stroke-width="1" stroke-linecap="round">
+        <line x1="107" y1="113" x2="107" y2="107"/>
+        <line x1="110" y1="112" x2="110" y2="106"/>
+        <line x1="113" y1="113" x2="113" y2="107"/>
+      </g>
+    </svg>`,
+
+    schedule: `<svg viewBox="0 0 220 160" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <!-- Calendar -->
+      <rect x="30" y="30" width="160" height="115" rx="12" fill="white" stroke="#cddbd7" stroke-width="2"/>
+      <rect x="30" y="30" width="160" height="36" rx="12" fill="#00857a"/>
+      <rect x="30" y="54" width="160" height="12" fill="#00857a"/>
+      <text x="110" y="52" text-anchor="middle" font-size="13" fill="white" font-weight="700" font-family="Satoshi,sans-serif" id="cal-month">APRIL</text>
+      <!-- Calendar grid dots -->
+      <g fill="#cddbd7">
+        <circle cx="58" cy="85" r="4"/><circle cx="86" cy="85" r="4"/><circle cx="114" cy="85" r="4"/><circle cx="142" cy="85" r="4"/><circle cx="170" cy="85" r="4"/>
+        <circle cx="58" cy="108" r="4"/><circle cx="86" cy="108" r="4"/><circle cx="142" cy="108" r="4"/><circle cx="170" cy="108" r="4"/>
+        <circle cx="58" cy="128" r="4"/><circle cx="86" cy="128" r="4"/><circle cx="114" cy="128" r="4"/><circle cx="170" cy="128" r="4"/>
+      </g>
+      <!-- Checkmarks -->
+      <g stroke="#00857a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none">
+        <polyline points="108,80 112,85 120,76"/>
+        <polyline points="136,103 140,108 148,99"/>
+      </g>
+      <!-- Cross (missed) -->
+      <g stroke="#e55" stroke-width="2" stroke-linecap="round">
+        <line x1="108" y1="122" x2="120" y2="134"/>
+        <line x1="120" y1="122" x2="108" y2="134"/>
+      </g>
+    </svg>`
+  };
+
+  /* ── LANGUAGE DATA ── */
+  const langs = {
+    sl: {
+      dir:'ltr', htmlLang:'sl',
+      ui: {
+        brand_title:'Navodila za ustno higieno',
+        brand_sub:'mostički, medzobni prostori in proteze',
+        language_label:'Jezik',
+        references_link:'Reference',
+        references_title:'Reference',
+        references_intro:'Glavni znanstveni viri in smernice, na katerih temelji vsebina te strani.',
+        footer_text:'Za vsa dodatna vprašanja se je treba posvetovati s strokovnjakom za dlesni in za preventivo (zobozdravnikom, ustnim higienikom, parodontologom).',
+        cal_month:'APRIL'
+      },
+      hero_title:'Kako si vsak dan dobro očistite zobe, mostičke in proteze',
+      hero_lede:'Ta navodila so napisana neposredno za vas. Namen je, da doma lažje in pravilno očistite mesta, kjer se biofilm najhitreje nabira: med zobmi, pod mostički, na protezah in ob dlesni.',
+      quicklist_title:'Najkrajša verzija',
+      quicklist:[
+        'Zobe ščetkajte 2× na dan z mehko ščetko.',
+        'Med zobmi čistite vsak dan z medzobno ščetko ali nitko.',
+        'Pod mostičkom vsak dan uporabite superfloss.',
+        'Protezo vsak dan snemite, očistite in po potrebi namočite v namensko čistilo.',
+        'Če krvavenje ali občutljivost ne mineta v 2 tednih, se naročite na pregled.'
+      ],
+      sections:[
+        {
+          illus:'interdental',
+          title:'Kako čistite med zobmi',
+          steps:[
+            'Če gre medzobna ščetka lepo skozi brez sile, jo uporabljajte vsak dan.',
+            'Če je prostor zelo tesen, uporabite nitko.',
+            'Najprej očistite med zobmi, nato si zobe ščetkajte z zobno pasto.',
+            'Če dlesen ob začetku malo krvavi, to pogosto pomeni vnetje zaradi biofilma. Čistite nežno in redno.'
+          ]
+        },
+        {
+          illus:'bridge',
+          title:'Kako čistite pod mostičkom',
+          steps:[
+            'Vsak dan uporabite superfloss nitko.',
+            'Trši konec speljite pod mostiček ali pod ortodontsko žičko.',
+            'Mehki del nežno pomikajte sem in tja ob zobu nosilcu in ob spodnji strani mostička.',
+            'Čistite brez sunkov in brez sile, da ne poškodujete dlesni.'
+          ]
+        },
+        {
+          illus:'denture',
+          title:'Kako čistite protezo',
+          steps:[
+            'Protezo vsak dan snemite in jo očistite zunaj ust.',
+            'Uporabite posebno ščetko za proteze in namensko čistilo ali pasto za proteze.',
+            'Ne uporabljajte navadne zobne paste ali drugih grobih čistil.',
+            'Protezo po navodilih tudi namočite v namensko čistilno raztopino.'
+          ]
+        }
+      ],
+      cards2:[
+        {
+          title:'Pomembno pravilo',
+          body:'V ustih velja zlato pravilo: površine morajo biti gladke, da se hrana in bakterije čim manj nabirajo. Zato pri protezah ne uporabljajte grobih past ali čistil, ker lahko poškodujejo gladko površino in s tem olajšajo ponovno nabiranje oblog.\n\nNajbolj pomembno je mehansko čiščenje. Ustna vodica ni zamenjava za ščetko, nitko, medzobno ščetko ali superfloss.'
+        },
+        {
+          illus:'electric',
+          title:'Električna zobna ščetka',
+          body:'Električna zobna ščetka je lahko zelo dobra izbira, ker vam pomaga bolj enakomerno in učinkovito odstraniti biofilm. Študije kažejo, da pogosto bolje zmanjša plak, gingivitis in krvavenje kot navadna ročna ščetka.\n\nPosebej koristna je, če imate mostičke, aparate, protezo, slabšo ročno spretnost ali če se vam obloge hitro nabirajo.'
+        }
+      ],
+      cards3:[
+        {
+          illus:'floss',
+          title:'Nitka ali medzobna ščetka',
+          body:'Če prostor med zobmi dopušča, je medzobna ščetka običajno boljša prva izbira. Pogosto odstrani več plaka in bolje očisti širše medzobne prostore.\n\nNitka je zelo uporabna tam, kjer je stik zelo tesen in medzobna ščetka ne gre skozi.'
+        },
+        {
+          title:'Kdaj uporabiti klorheksidin',
+          body:'Klorheksidinska ustna vodica je lahko kratkotrajna pomoč pri vnetju dlesni ali po določenih posegih, vendar ni priporočljiva za vsakodnevno dolgotrajno uporabo. Vedno je bolj pomembno dobro mehansko čiščenje.\n\nPodporno se lahko po navodilu uporablja Curaprox zobna pasta skupaj s Curaprox Perio Plus Forte, vendar le kratek čas, okrog 3 do 7 dni.'
+        },
+        {
+          illus:'telescope',
+          title:'Teleskopske proteze',
+          body:'Primarne teleskope v ustih čistite kot zobe: z mehko ščetko, enosnopno ščetko in po potrebi z majhno medzobno ščetko ob robu pri dlesni.\n\nSekundarne teleskope v protezi čistite zunaj ust s posebno ščetko za proteze in nežnim namenskim čistilom. Notranjih površin ne drgnite z grobimi sredstvi.'
+        }
+      ],
+      cards2b:[
+        {
+          illus:'schedule',
+          title:'Kdaj se naročite na pregled',
+          body:'',
+          list:[
+            'Če krvavenje ali občutljivost dlesni ne mineta v 2 tednih.',
+            'Če se vam hrana stalno zatika pod mostičkom.',
+            'Če proteza žuli, smrdi, se maje ali povzroča ranice.',
+            'Če opazite trdovraten zadah ali hitro nabiranje biofilma.'
+          ]
+        },
+        {
+          title:'Redna profesionalna higiena',
+          body:'Smiselno je, da imate obisk pri ustnem higieniku vsaj enkrat letno. Če se vam zobni kamen ali biofilm nabirata hitreje, pa tudi pogosteje.\n\nNekaterih mest doma preprosto ni mogoče dovolj dobro očistiti, zato je profesionalna kontrola zelo pomembna tudi takrat, ko zobnega kamna skoraj ni.'
+        }
+      ],
+      note:'Če želite najboljši rezultat doma, naj bo vaša rutina preprosta: vsak dan medzobno čiščenje, nato ščetkanje, redni pregledi in nežna, dosledna tehnika.'
+    },
+
+    en: {
+      dir:'ltr', htmlLang:'en',
+      ui:{
+        brand_title:'Oral hygiene instructions',
+        brand_sub:'bridges, interdental spaces and dentures',
+        language_label:'Language',
+        references_link:'References',
+        references_title:'References',
+        references_intro:'Key scientific sources and guidelines used for this page.',
+        footer_text:'For any additional questions, consult a gum and prevention specialist (dentist, dental hygienist, periodontist).',
+        cal_month:'APRIL'
+      },
+      hero_title:'How to clean your teeth, bridges and dentures every day',
+      hero_lede:'These instructions are written directly for you. The goal is to help you clean the places where biofilm builds up most easily: between the teeth, under bridges, on dentures and along the gumline.',
+      quicklist_title:'Short version',
+      quicklist:[
+        'Brush twice a day with a soft toothbrush.',
+        'Clean between your teeth every day with an interdental brush or floss.',
+        'Use superfloss under your bridge every day.',
+        'Remove and clean your denture every day and soak it when needed.',
+        'If bleeding or soreness does not stop within 2 weeks, book a dental visit.'
+      ],
+      sections:[
+        {
+          illus:'interdental',
+          title:'Between your teeth',
+          steps:[
+            'If an interdental brush fits gently, use it every day.',
+            'If the space is very tight, use floss.',
+            'Clean between the teeth first and brush afterwards with toothpaste.',
+            'If your gums bleed a little at first, this often means inflammation caused by biofilm. Clean gently and regularly.'
+          ]
+        },
+        {
+          illus:'bridge',
+          title:'Under your bridge',
+          steps:[
+            'Use superfloss every day.',
+            'Guide the stiff end under the bridge or under an orthodontic wire.',
+            'Move the soft part gently back and forth against the supporting tooth and the underside of the bridge.',
+            'Do not snap it through or use force.'
+          ]
+        },
+        {
+          illus:'denture',
+          title:'Your denture',
+          steps:[
+            'Remove your denture every day and clean it outside your mouth.',
+            'Use a denture brush and a denture cleanser or denture paste.',
+            'Do not use regular toothpaste or rough cleaning products.',
+            'Soak the denture in a dedicated cleaning solution when indicated.'
+          ]
+        }
+      ],
+      cards2:[
+        {
+          title:'An important rule',
+          body:'There is a golden rule in the mouth: surfaces should stay smooth so food and bacteria do not collect easily. That is why dentures should not be cleaned with regular toothpaste or harsh products.\n\nMechanical cleaning is always the most important step. Mouthwash does not replace brushing, flossing, interdental cleaning or superfloss.'
+        },
+        {
+          illus:'electric',
+          title:'Electric toothbrush',
+          body:'An electric toothbrush can be an excellent choice because it often helps remove biofilm more evenly and effectively. Studies show that it often reduces plaque, gingivitis and bleeding better than a manual brush.\n\nIt can be especially helpful if you have bridges, braces, dentures, reduced dexterity or fast plaque build-up.'
+        }
+      ],
+      cards3:[
+        {
+          illus:'floss',
+          title:'Floss or interdental brush',
+          body:'If the space allows it, an interdental brush is usually the better first choice. It often removes more plaque in wider spaces.\n\nFloss is very useful where contacts are too tight for an interdental brush.'
+        },
+        {
+          title:'When to use chlorhexidine',
+          body:'Chlorhexidine mouthrinse can help for a short time in cases of gum inflammation or after certain procedures, but it is not recommended for long-term daily use. Good mechanical cleaning is still more important.\n\nUnder professional advice, a Curaprox toothpaste can be combined with Curaprox Perio Plus Forte for about 3 to 7 days, reading the instructions carefully.'
+        },
+        {
+          illus:'telescope',
+          title:'Telescopic dentures',
+          body:'Clean the primary telescopes in your mouth like teeth: with a soft toothbrush, a single-tuft brush and, if needed, a small interdental brush around the gum margin.\n\nClean the secondary telescopes in the denture outside the mouth with a denture brush and a gentle denture cleanser. Do not scrub the inside with abrasive products.'
+        }
+      ],
+      cards2b:[
+        {
+          illus:'schedule',
+          title:'When to book a visit',
+          body:'',
+          list:[
+            'If bleeding or gum tenderness does not improve within 2 weeks.',
+            'If food gets stuck under your bridge all the time.',
+            'If your denture rubs, smells, feels loose or causes sore spots.',
+            'If you notice persistent bad breath or fast plaque build-up.'
+          ]
+        },
+        {
+          title:'Professional cleaning',
+          body:'It is sensible to see a dental hygienist at least once a year. If tartar or biofilm builds up quickly, you may need visits more often.\n\nSome areas are simply too difficult to clean well at home, so professional monitoring remains important even when there is little tartar.'
+        }
+      ],
+      note:'For the best home routine, keep it simple: clean between the teeth every day, then brush, attend regular check-ups and use a gentle, consistent technique.'
+    },
+
+    hr: {
+      dir:'ltr', htmlLang:'hr',
+      ui:{
+        brand_title:'Upute za oralnu higijenu',
+        brand_sub:'mostovi, međuzubni prostori i proteze',
+        language_label:'Jezik',
+        references_link:'Reference',
+        references_title:'Reference',
+        references_intro:'Glavni znanstveni izvori i smjernice na kojima se temelji sadržaj ove stranice.',
+        footer_text:'Za sva dodatna pitanja savjetujte se sa stručnjakom za desni i preventivu (stomatologom, dentalnim higijeničarom, parodontologom).',
+        cal_month:'TRAVANJ'
+      },
+      hero_title:'Kako svaki dan pravilno očistiti zube, mostove i proteze',
+      hero_lede:'Ove upute napisane su izravno za vas. Cilj je da kod kuće lakše i pravilno očistite mjesta na kojima se biofilm najbrže nakuplja: između zuba, ispod mostova, na protezama i uz desni.',
+      quicklist_title:'Kratka verzija',
+      quicklist:[
+        'Zube četkajte 2× dnevno mekom četkicom.',
+        'Između zuba čistite svaki dan interdentalnom četkicom ili koncem.',
+        'Ispod mosta svaki dan koristite superfloss.',
+        'Protezu svaki dan izvadite, očistite i po potrebi namočite u namjensko sredstvo.',
+        'Ako krvarenje ili osjetljivost ne prođu u roku od 2 tjedna, naručite pregled.'
+      ],
+      sections:[
+        {
+          illus:'interdental',
+          title:'Čišćenje između zuba',
+          steps:[
+            'Ako interdentalna četkica lako prolazi bez sile, koristite je svaki dan.',
+            'Ako je prostor jako tjesan, koristite zubni konac.',
+            'Najprije očistite između zuba, zatim četkajte zube pastom.',
+            'Ako desni malo krvare na početku, to često znači upalu zbog biofilma. Čistite nježno i redovito.'
+          ]
+        },
+        {
+          illus:'bridge',
+          title:'Čišćenje ispod mosta',
+          steps:[
+            'Svaki dan koristite superfloss konac.',
+            'Tvrđi kraj provedite ispod mosta ili ortodontske žice.',
+            'Meki dio nježno pomičite naprijed-natrag uz zub nosač i uz donju stranu mosta.',
+            'Čistite bez trzaja i bez sile da ne ozlijedite desni.'
+          ]
+        },
+        {
+          illus:'denture',
+          title:'Čišćenje proteze',
+          steps:[
+            'Protezu svaki dan izvadite i očistite izvan usta.',
+            'Koristite posebnu četkicu za proteze i namjensko sredstvo ili pastu za proteze.',
+            'Ne koristite običnu zubnu pastu ni gruba sredstva za čišćenje.',
+            'Protezu po uputama namočite u namjensku otopinu za čišćenje.'
+          ]
+        }
+      ],
+      cards2:[
+        {
+          title:'Važno pravilo',
+          body:'U ustima vrijedi zlatno pravilo: površine moraju biti glatke da se hrana i bakterije što manje nakupljaju. Zato za proteze ne koristite grube paste ni sredstva jer mogu oštetiti glatku površinu i olakšati ponovnu pojavu naslaga.\n\nNajvažnije je mehaničko čišćenje. Vodica za usta nije zamjena za četkicu, konac, interdentalnu četkicu ni superfloss.'
+        },
+        {
+          illus:'electric',
+          title:'Električna četkica za zube',
+          body:'Električna četkica za zube može biti odličan izbor jer vam pomaže ravnomjernije i učinkovitije ukloniti biofilm. Istraživanja pokazuju da često bolje smanjuje plak, gingivitis i krvarenje od ručne četkice.\n\nPosebno je korisna ako imate mostove, aparatić, protezu, slabiju motoričku spretnost ili ako se naslage brzo nakupljaju.'
+        }
+      ],
+      cards3:[
+        {
+          illus:'floss',
+          title:'Konac ili interdentalna četkica',
+          body:'Ako prostor između zuba to dopušta, interdentalna četkica je obično bolji prvi izbor. Često uklanja više plaka i bolje čisti šire međuzubne prostore.\n\nZubni konac je vrlo koristan tamo gdje je kontakt prestiješan za interdentalnu četkicu.'
+        },
+        {
+          title:'Kada koristiti klorheksidin',
+          body:'Klorheksidinska vodica može kratkoročno pomoći kod upale desni ili nakon određenih zahvata, ali nije preporučljiva za svakodnevnu dugotrajnu upotrebu. Uvijek je važnije dobro mehaničko čišćenje.\n\nPo savjetu stručnjaka može se koristiti Curaprox pasta uz Curaprox Perio Plus Forte, samo kratko, otprilike 3 do 7 dana.'
+        },
+        {
+          illus:'telescope',
+          title:'Teleskopske proteze',
+          body:'Primarne teleskope u ustima čistite kao zube: mekom četkicom, jednosnopnom četkicom i po potrebi malom interdentalnom četkicom uz rub desni.\n\nSekundarne teleskope u protezi čistite izvan usta posebnom četkicom za proteze i nježnim namjenskim sredstvom. Unutarnje površine ne trite grubim sredstvima.'
+        }
+      ],
+      cards2b:[
+        {
+          illus:'schedule',
+          title:'Kada naručiti pregled',
+          body:'',
+          list:[
+            'Ako krvarenje ili osjetljivost desni ne prolaze u roku 2 tjedna.',
+            'Ako vam se hrana stalno zaglavljuje ispod mosta.',
+            'Ako proteza žulja, miriše, labavi ili uzrokuje rane.',
+            'Ako primijetite uporan loš zadah ili brzo nakupljanje biofilma.'
+          ]
+        },
+        {
+          title:'Redovita profesionalna higijena',
+          body:'Preporučuje se posjet dentalnom higijeničaru najmanje jednom godišnje. Ako se zubni kamenac ili biofilm brzo nakupljaju, posjete trebaju biti češće.\n\nNeka mjesta kod kuće jednostavno nije moguće dovoljno dobro očistiti, pa je profesionalna kontrola važna i kada kamenca gotovo nema.'
+        }
+      ],
+      note:'Za najbolji rezultat kod kuće neka vaša rutina bude jednostavna: svaki dan čišćenje između zuba, zatim četkanje, redoviti pregledi i nježna, dosljedna tehnika.'
+    },
+
+    sr: {
+      dir:'ltr', htmlLang:'sr',
+      ui:{
+        brand_title:'Uputstva za oralnu higijenu',
+        brand_sub:'mostovi, međuzubni prostori i proteze',
+        language_label:'Jezik',
+        references_link:'Reference',
+        references_title:'Reference',
+        references_intro:'Glavni naučni izvori i smernice na kojima se zasniva sadržaj ove stranice.',
+        footer_text:'Za sva dodatna pitanja posavetujte se sa stručnjakom za desni i preventivu (stomatologom, dentalnim higijeničarom, parodontologom).',
+        cal_month:'APRIL'
+      },
+      hero_title:'Kako svakog dana pravilno da očistite zube, mostove i proteze',
+      hero_lede:'Ova uputstva su napisana direktno za vas. Cilj je da kod kuće lakše i pravilno očistite mesta gde se biofilm najbrže skuplja: između zuba, ispod mostova, na protezama i uz desni.',
+      quicklist_title:'Kratka verzija',
+      quicklist:[
+        'Perite zube 2× dnevno mekom četkicom.',
+        'Između zuba čistite svaki dan interdentalnom četkicom ili koncem.',
+        'Ispod mosta svakog dana koristite superfloss.',
+        'Protezu svaki dan skinite, očistite i po potrebi potopite u namensko sredstvo.',
+        'Ako krvarenje ili osetljivost ne prođu za 2 nedelje, zakažite pregled.'
+      ],
+      sections:[
+        {
+          illus:'interdental',
+          title:'Čišćenje između zuba',
+          steps:[
+            'Ako interdentalna četkica lako prolazi bez sile, koristite je svaki dan.',
+            'Ako je prostor veoma tesnac, koristite zubni konac.',
+            'Najpre očistite između zuba, zatim četkajte zube pastom.',
+            'Ako desni malo krvare u početku, to često znači zapaljenje zbog biofilma. Čistite nežno i redovno.'
+          ]
+        },
+        {
+          illus:'bridge',
+          title:'Čišćenje ispod mosta',
+          steps:[
+            'Svaki dan koristite superfloss konac.',
+            'Tvrđi kraj provucite ispod mosta ili ortodontske žice.',
+            'Meki deo nežno pomičite napred-nazad uz noseći zub i donju stranu mosta.',
+            'Čistite bez trzaja i bez sile da ne povredite desni.'
+          ]
+        },
+        {
+          illus:'denture',
+          title:'Čišćenje proteze',
+          steps:[
+            'Protezu svaki dan skinite i očistite van usta.',
+            'Koristite posebnu četkicu za proteze i namensko sredstvo ili pastu za proteze.',
+            'Nemojte koristiti običnu zubnu pastu ni gruba sredstva za čišćenje.',
+            'Protezu po uputstvima potopite u namenski rastvor za čišćenje.'
+          ]
+        }
+      ],
+      cards2:[
+        {
+          title:'Važno pravilo',
+          body:'U ustima važi zlatno pravilo: površine moraju biti glatke da se hrana i bakterije što manje nakupljaju. Zato za proteze ne koristite grube paste jer mogu oštetiti glatku površinu.\n\nNajvažnije je mehaničko čišćenje. Vodica za usta nije zamena za četkicu, konac, interdentalnu četkicu ni superfloss.'
+        },
+        {
+          illus:'electric',
+          title:'Električna četkica za zube',
+          body:'Električna četkica za zube može biti odličan izbor jer vam pomaže ravnomernije i efikasnije ukloniti biofilm. Studije pokazuju da često bolje smanjuje plak, gingivitis i krvarenje od ručne četkice.\n\nPosebno je korisna ako imate mostove, aparat, protezu, slabiju motoričku spretnost ili ako se naslage brzo nakupljaju.'
+        }
+      ],
+      cards3:[
+        {
+          illus:'floss',
+          title:'Konac ili interdentalna četkica',
+          body:'Ako prostor između zuba to dopušta, interdentalna četkica je obično bolji prvi izbor. Često uklanja više plaka i bolje čisti šire međuzubne prostore.\n\nZubni konac je veoma koristan tamo gde je kontakt preuzan za interdentalnu četkicu.'
+        },
+        {
+          title:'Kada koristiti hlorheksidin',
+          body:'Hlorheksidinska vodica može kratkoročno pomoći kod upale desni ili posle određenih zahvata, ali nije preporučljiva za svakodnevnu dugotrajnu upotrebu. Uvek je važnije dobro mehaničko čišćenje.\n\nPo savetu stručnjaka može se koristiti Curaprox pasta uz Curaprox Perio Plus Forte, samo kratko, oko 3 do 7 dana.'
+        },
+        {
+          illus:'telescope',
+          title:'Teleskopske proteze',
+          body:'Primarne teleskope u ustima čistite kao zube: mekom četkicom, jednosnopnom četkicom i po potrebi malom interdentalnom četkicom uz rub desni.\n\nSekundarne teleskope u protezi čistite van usta posebnom četkicom za proteze i nežnim namenskim sredstvom. Unutrašnje površine nemojte ribati grubim sredstvima.'
+        }
+      ],
+      cards2b:[
+        {
+          illus:'schedule',
+          title:'Kada zakazati pregled',
+          body:'',
+          list:[
+            'Ako krvarenje ili osetljivost desni ne prolaze za 2 nedelje.',
+            'Ako vam se hrana stalno zaglavljuje ispod mosta.',
+            'Ako proteza žulja, miriše, klima ili uzrokuje rane.',
+            'Ako primetite uporan loš zadah ili brzo nakupljanje biofilma.'
+          ]
+        },
+        {
+          title:'Redovna profesionalna higijena',
+          body:'Preporučuje se poseta dentalnom higijeničaru najmanje jednom godišnje. Ako se zubni kamenac ili biofilm brzo nakupljaju, posete treba biti češće.\n\nNeka mesta kod kuće jednostavno nije moguće dovoljno dobro očistiti, pa je profesionalna kontrola važna i kada kamenca gotovo nema.'
+        }
+      ],
+      note:'Za najbolji rezultat kod kuće neka vaša rutina bude jednostavna: svaki dan čišćenje između zuba, zatim četkanje, redovni pregledi i nežna, dosledna tehnika.'
+    },
+
+    de: {
+      dir:'ltr', htmlLang:'de',
+      ui:{
+        brand_title:'Mundpflege-Anleitung',
+        brand_sub:'Brücken, Zahnzwischenräume und Prothesen',
+        language_label:'Sprache',
+        references_link:'Quellen',
+        references_title:'Quellen',
+        references_intro:'Wissenschaftliche Quellen und Leitlinien dieser Seite.',
+        footer_text:'Bei allen weiteren Fragen wenden Sie sich bitte an eine Fachperson (Zahnarzt, Dentalhygieniker, Parodontologe).',
+        cal_month:'APRIL'
+      },
+      hero_title:'So reinigen Sie täglich Ihre Zähne, Brücken und Prothesen',
+      hero_lede:'Diese Anleitungen wurden direkt für Sie geschrieben. Ziel ist es, die Stellen zu reinigen, an denen sich Biofilm am schnellsten ansammelt: zwischen den Zähnen, unter Brücken, an Prothesen und entlang des Zahnfleisches.',
+      quicklist_title:'Kurzfassung',
+      quicklist:[
+        'Zähne 2× täglich mit einer weichen Zahnbürste putzen.',
+        'Täglich zwischen den Zähnen mit einer Interdentalbürste oder Zahnseide reinigen.',
+        'Täglich Superfloss unter der Brücke verwenden.',
+        'Prothese täglich herausnehmen, reinigen und bei Bedarf einweichen.',
+        'Wenn Blutungen oder Empfindlichkeit nach 2 Wochen nicht abklingen, Zahnarzttermin vereinbaren.'
+      ],
+      sections:[
+        {
+          illus:'interdental',
+          title:'Zahnzwischenräume reinigen',
+          steps:[
+            'Wenn eine Interdentalbürste leicht und ohne Kraftaufwand passt, täglich verwenden.',
+            'Ist der Zwischenraum sehr eng, Zahnseide benutzen.',
+            'Erst zwischen den Zähnen reinigen, dann mit Zahnpasta bürsten.',
+            'Bluten die Zahnfleischränder am Anfang leicht, deutet das oft auf eine Entzündung hin. Sanft und regelmäßig reinigen.'
+          ]
+        },
+        {
+          illus:'bridge',
+          title:'Unter der Brücke reinigen',
+          steps:[
+            'Täglich Superfloss-Faden verwenden.',
+            'Das steife Ende unter die Brücke oder unter einen Orthodontiedraht führen.',
+            'Den weichen Teil sanft hin und her bewegen – am Pfeilerzahn und an der Unterseite der Brücke.',
+            'Nicht ruckartig einführen und keine Kraft anwenden.'
+          ]
+        },
+        {
+          illus:'denture',
+          title:'Prothese reinigen',
+          steps:[
+            'Prothese täglich herausnehmen und außerhalb des Mundes reinigen.',
+            'Spezielle Prothesenbürste und Prothesenreiniger verwenden.',
+            'Keine normale Zahnpasta oder raue Reinigungsmittel verwenden.',
+            'Prothese gemäß Anleitung in eine Reinigungslösung einlegen.'
+          ]
+        }
+      ],
+      cards2:[
+        {
+          title:'Eine wichtige Regel',
+          body:'Im Mund gilt die goldene Regel: Oberflächen sollen glatt bleiben, damit Speisereste und Bakterien wenig anhaften. Deshalb keine normale Zahnpasta oder raue Mittel für Prothesen verwenden.\n\nMechanische Reinigung ist immer am wichtigsten. Mundspülung ersetzt keine Bürste, keinen Faden, keine Interdentalbürste und kein Superfloss.'
+        },
+        {
+          illus:'electric',
+          title:'Elektrische Zahnbürste',
+          body:'Eine elektrische Zahnbürste kann eine ausgezeichnete Wahl sein, da sie oft hilft, Biofilm gleichmäßiger und effektiver zu entfernen. Studien zeigen, dass sie Plaque, Gingivitis und Blutungen häufig besser reduziert als eine Handbürste.\n\nBesonders hilfreich bei Brücken, Zahnspange, Prothese, eingeschränkter Geschicklichkeit oder schnellem Plaqueaufbau.'
+        }
+      ],
+      cards3:[
+        {
+          illus:'floss',
+          title:'Zahnseide oder Interdentalbürste',
+          body:'Wenn der Zwischenraum es erlaubt, ist die Interdentalbürste meist die bessere Wahl. Sie entfernt oft mehr Plaque in breiteren Räumen.\n\nZahnseide ist sehr nützlich, wenn der Kontakt zu eng für eine Interdentalbürste ist.'
+        },
+        {
+          title:'Chlorhexidin: wann anwenden',
+          body:'Chlorhexidin-Mundspülung kann kurzfristig bei Zahnfleischentzündungen oder nach bestimmten Eingriffen helfen, wird aber nicht für den dauerhaften täglichen Gebrauch empfohlen. Gute mechanische Reinigung ist immer wichtiger.\n\nAuf ärztlichen Rat kann Curaprox-Zahncreme mit Curaprox Perio Plus Forte für etwa 3 bis 7 Tage kombiniert werden.'
+        },
+        {
+          illus:'telescope',
+          title:'Teleskopprothesen',
+          body:'Primärteleskope im Mund wie Zähne reinigen: mit einer weichen Zahnbürste, einer Einbüschelzahnbürste und bei Bedarf einer kleinen Interdentalbürste am Zahnfleischrand.\n\nSekundärteleskope der Prothese außerhalb des Mundes mit einer Prothesenbürste und einem sanften Reiniger reinigen. Innenoberflächen nicht mit rauen Mitteln schrubben.'
+        }
+      ],
+      cards2b:[
+        {
+          illus:'schedule',
+          title:'Wann zum Zahnarzt',
+          body:'',
+          list:[
+            'Wenn Zahnfleischbluten oder Empfindlichkeit nach 2 Wochen nicht nachlässt.',
+            'Wenn Speisereste ständig unter der Brücke stecken.',
+            'Wenn die Prothese drückt, riecht, wackelt oder Druckstellen verursacht.',
+            'Bei anhaltendem schlechtem Atem oder schnellem Plaqueaufbau.'
+          ]
+        },
+        {
+          title:'Professionelle Zahnreinigung',
+          body:'Es ist sinnvoll, mindestens einmal jährlich zur Dentalhygiene zu gehen. Bei schnellem Zahnsteinaufbau auch häufiger.\n\nManche Stellen lassen sich zuhause einfach nicht ausreichend reinigen, daher ist die professionelle Kontrolle auch bei wenig Zahnstein wichtig.'
+        }
+      ],
+      note:'Für die beste Reinigung zuhause: täglich Zahnzwischenräume reinigen, dann bürsten, regelmäßige Kontrollen und eine sanfte, konsequente Technik.'
+    },
+
+    it: {
+      dir:'ltr', htmlLang:'it',
+      ui:{
+        brand_title:'Istruzioni per l\'igiene orale',
+        brand_sub:'ponti, spazi interdentali e protesi',
+        language_label:'Lingua',
+        references_link:'Riferimenti',
+        references_title:'Riferimenti',
+        references_intro:'Principali fonti scientifiche e linee guida su cui si basa questa pagina.',
+        footer_text:'Per qualsiasi ulteriore domanda, consultare uno specialista delle gengive e della prevenzione (dentista, igienista dentale, parodontologo).',
+        cal_month:'APRILE'
+      },
+      hero_title:'Come pulire ogni giorno denti, ponti e protesi',
+      hero_lede:'Queste istruzioni sono scritte direttamente per te. L\'obiettivo è aiutarti a pulire i posti dove il biofilm si accumula più facilmente: tra i denti, sotto i ponti, sulle protesi e lungo il margine gengivale.',
+      quicklist_title:'Versione breve',
+      quicklist:[
+        'Spazzola i denti 2× al giorno con uno spazzolino morbido.',
+        'Pulisci tra i denti ogni giorno con uno scovolino o il filo interdentale.',
+        'Usa il superfloss sotto il ponte ogni giorno.',
+        'Rimuovi e pulisci la protesi ogni giorno e immergila quando necessario.',
+        'Se sanguinamento o dolore non migliorano entro 2 settimane, prenota una visita.'
+      ],
+      sections:[
+        {
+          illus:'interdental',
+          title:'Tra i denti',
+          steps:[
+            'Se lo scovolino entra delicatamente senza forzare, usalo ogni giorno.',
+            'Se lo spazio è molto stretto, usa il filo interdentale.',
+            'Pulisci prima tra i denti, poi spazzola con il dentifricio.',
+            'Se le gengive sanguinano un po\' all\'inizio, spesso indica un\'infiammazione causata dal biofilm. Pulisci delicatamente e regolarmente.'
+          ]
+        },
+        {
+          illus:'bridge',
+          title:'Sotto il ponte',
+          steps:[
+            'Usa il superfloss ogni giorno.',
+            'Guida l\'estremità rigida sotto il ponte o sotto un filo ortodontico.',
+            'Muovi la parte morbida delicatamente avanti e indietro contro il dente pilastro e sotto il ponte.',
+            'Non tirarlo con forza.'
+          ]
+        },
+        {
+          illus:'denture',
+          title:'La protesi',
+          steps:[
+            'Rimuovi la protesi ogni giorno e puliscila fuori dalla bocca.',
+            'Usa uno spazzolino per protesi e un detergente o pasta per protesi.',
+            'Non usare dentifricio normale o prodotti abrasivi.',
+            'Immergi la protesi in una soluzione detergente apposita quando indicato.'
+          ]
+        }
+      ],
+      cards2:[
+        {
+          title:'Una regola importante',
+          body:'In bocca vale la regola d\'oro: le superfici devono restare lisce per non trattenere cibo e batteri. Ecco perché le protesi non si devono pulire con il dentifricio normale o prodotti abrasivi.\n\nLa pulizia meccanica è sempre il passo più importante. Il collutorio non sostituisce lo spazzolino, il filo, lo scovolino o il superfloss.'
+        },
+        {
+          illus:'electric',
+          title:'Spazzolino elettrico',
+          body:'Lo spazzolino elettrico può essere una scelta eccellente perché aiuta a rimuovere il biofilm in modo più uniforme ed efficace. Gli studi mostrano che spesso riduce placca, gengivite e sanguinamento meglio di uno spazzolino manuale.\n\nÈ particolarmente utile in presenza di ponti, apparecchi, protesi, scarsa destrezza manuale o rapida formazione di placca.'
+        }
+      ],
+      cards3:[
+        {
+          illus:'floss',
+          title:'Filo o scovolino',
+          body:'Se lo spazio lo consente, lo scovolino è di solito la prima scelta migliore. Rimuove spesso più placca negli spazi più ampi.\n\nIl filo interdentale è molto utile dove i contatti sono troppo stretti per uno scovolino.'
+        },
+        {
+          title:'Quando usare la clorexidina',
+          body:'Il collutorio alla clorexidina può aiutare a breve termine in caso di infiammazione gengivale o dopo certi interventi, ma non è raccomandato per un uso quotidiano prolungato. La pulizia meccanica è sempre più importante.\n\nSu indicazione professionale, un dentifricio Curaprox può essere abbinato a Curaprox Perio Plus Forte per circa 3-7 giorni.'
+        },
+        {
+          illus:'telescope',
+          title:'Protesi telescopica',
+          body:'Pulisci le corone telescopiche primarie in bocca come i denti: con uno spazzolino morbido, uno monociuffo e, se necessario, uno scovolino piccolo lungo il margine gengivale.\n\nPulisci le corone secondarie nella protesi fuori dalla bocca con uno spazzolino per protesi e un detergente delicato. Non strofinare le superfici interne con prodotti abrasivi.'
+        }
+      ],
+      cards2b:[
+        {
+          illus:'schedule',
+          title:'Quando prenotare una visita',
+          body:'',
+          list:[
+            'Se sanguinamento o sensibilità gengivale non migliorano entro 2 settimane.',
+            'Se il cibo rimane incastrato sotto il ponte continuamente.',
+            'Se la protesi fa male, ha odore, è allentata o causa ulcerazioni.',
+            'Se noti alito persistente o rapida formazione di placca.'
+          ]
+        },
+        {
+          title:'Pulizia professionale',
+          body:'È opportuno rivolgersi all\'igienista dentale almeno una volta l\'anno. Se tartaro o biofilm si formano rapidamente, può essere necessario farlo più spesso.\n\nAlcune zone sono semplicemente troppo difficili da pulire correttamente a casa, quindi il controllo professionale resta importante anche quando il tartaro è scarso.'
+        }
+      ],
+      note:'Per la migliore routine casalinga, mantienila semplice: pulisci tra i denti ogni giorno, poi spazzola, fa\' controlli regolari e usa una tecnica delicata e costante.'
+    },
+
+    sq: {
+      dir:'ltr', htmlLang:'sq',
+      ui:{
+        brand_title:'Udhëzime për higjienën orale',
+        brand_sub:'urat, hapësirat ndërdhëmbore dhe protezat',
+        language_label:'Gjuha',
+        references_link:'Referencat',
+        references_title:'Referencat',
+        references_intro:'Burimet kryesore shkencore dhe udhëzimet mbi të cilat bazohet kjo faqe.',
+        footer_text:'Për çdo pyetje shtesë konsultohuni me një specialist të mishrave të dhëmbëve dhe të parandalimit.',
+        cal_month:'PRILL'
+      },
+      hero_title:'Si t\'i pastroni çdo ditë dhëmbët, urat dhe protezat',
+      hero_lede:'Këto udhëzime janë shkruar drejtpërdrejt për ju. Qëllimi është të pastroni vendet ku biofilmi mblidhet më shpejt: midis dhëmbëve, nën ura, mbi proteza dhe buzë mishrave.',
+      quicklist_title:'Versioni i shkurtër',
+      quicklist:[
+        'Lani dhëmbët 2× në ditë me furçë të butë.',
+        'Pastroni midis dhëmbëve çdo ditë me furçë interdentale ose fill dentar.',
+        'Përdorni superfloss nën urë çdo ditë.',
+        'Hiqni dhe pastroni protezën çdo ditë dhe njomni kur nevojitet.',
+        'Nëse gjakderdhja ose dhimbja nuk kalon brenda 2 javësh, rezervoni një vizitë.'
+      ],
+      sections:[
+        { illus:'interdental', title:'Midis dhëmbëve', steps:['Nëse furça interdentale hyn lehtë pa forcë, përdoreni çdo ditë.','Nëse hapësira është shumë e ngushtë, përdorni fill dentar.','Fillimisht pastroni midis dhëmbëve, pastaj lani me pastë dhëmbësh.','Nëse mishrat gjakojnë pak në fillim, kjo shpesh tregon inflamacion nga biofilmi. Pastroni butë dhe rregullisht.'] },
+        { illus:'bridge', title:'Nën urë', steps:['Përdorni superfloss çdo ditë.','Udhëzoni fundin e fortë nën urë ose nën telin ortodontik.','Lëvizni pjesën e butë butësisht mbrapa-para kundër dhëmbit mbështetës dhe nën urë.','Mos e fusni me forcë.'] },
+        { illus:'denture', title:'Proteza', steps:['Hiqni protezën çdo ditë dhe pastroni jashtë gojës.','Përdorni furçë proteze dhe pastrues ose pastë proteze.','Mos përdorni pastë dhëmbësh normale ose produkte gërryes.','Njomni protezën në tretësirë pastruese sipas udhëzimeve.'] }
+      ],
+      cards2:[
+        { title:'Një rregull i rëndësishëm', body:'Në gojë vlen rregulli i artë: sipërfaqet duhet të mbeten të lëmuara. Prandaj mos përdorni pasta ose produkte të ashpra për protezat.\n\nPastrimi mekanik është gjithmonë hapi më i rëndësishëm. Gëlltitësi nuk zëvendëson furçën, fillin, furçën interdentale ose superfloss-in.' },
+        { illus:'electric', title:'Furça elektrike e dhëmbëve', body:'Furça elektrike mund të jetë zgjedhje e shkëlqyer pasi ndihmon të hiqni biofilmin më njëtrajtshëm. Studimet tregojnë se shpesh redukton pllakën, gingivitin dhe gjakderdhjen më mirë se furça manuale.\n\nÊshtë veçanërisht e dobishme nëse keni ura, aparate, proteza ose formim të shpejtë plakash.' }
+      ],
+      cards3:[
+        { illus:'floss', title:'Fill ose furçë interdentale', body:'Nëse hapësira lejon, furça interdentale është zakonisht zgjedhja e parë më e mirë. Shpesh heq më shumë pllakë.\n\nFilli dentar është shumë i dobishëm ku kontaktet janë shumë të ngushta.' },
+        { title:'Kur të përdorni klorheksidinën', body:'Gëlltitësi me klorheksidinë mund të ndihmojë afatshkurtër gjatë inflamacionit të mishrave, por nuk rekomandohet për përdorim të përditshëm. Pastrimi mekanik është gjithmonë më i rëndësishëm.' },
+        { illus:'telescope', title:'Proteza teleskopike', body:'Pastroni teleskopët primarë si dhëmbë: me furçë të butë dhe furçë me tufa të vogla.\n\nPastroni teleskopët sekondarë të protezës jashtë gojës me furçë proteze dhe pastrues të butë. Mos gërvishni sipërfaqet e brendshme.' }
+      ],
+      cards2b:[
+        { illus:'schedule', title:'Kur të rezervoni vizitë', body:'', list:['Nëse gjakderdhja ose ndjeshmëria e mishrave nuk përmirësohet pas 2 javësh.','Nëse ushqimi ngec gjatë gjithë kohës nën urë.','Nëse proteza kruhet, ka erë, lëviz ose shkakton plagë.','Nëse vini re frymë të keqe të vazhdueshme.'] },
+        { title:'Pastrimi profesional', body:'Është e mençur të vizitoni higienistin dentar të paktën një herë në vit. Nëse gurët ose biofilmi mblidhen shpejt, vizitat mund të jenë më të shpeshta.' }
+      ],
+      note:'Për rutinën më të mirë në shtëpi, mbajeni të thjeshtë: pastroni çdo ditë midis dhëmbëve, pastaj lani, bëni kontrolle të rregullta dhe përdorni teknikë të butë e të qëndrueshme.'
+    },
+
+    ar: {
+      dir:'rtl', htmlLang:'ar',
+      ui:{
+        brand_title:'تعليمات العناية الفموية',
+        brand_sub:'الجسور والمسافات بين الأسنان والأطقم',
+        language_label:'اللغة',
+        references_link:'المراجع',
+        references_title:'المراجع',
+        references_intro:'أهم المصادر العلمية والإرشادات المعتمدة في هذه الصفحة.',
+        footer_text:'لأي أسئلة إضافية يجب استشارة مختص بأمراض اللثة والوقاية.',
+        cal_month:'أبريل'
+      },
+      hero_title:'كيف تنظف أسنانك والجسور والأطقم يومياً',
+      hero_lede:'كُتبت هذه التعليمات مباشرةً لك. الهدف هو مساعدتك على تنظيف الأماكن التي يتراكم فيها البيوفيلم بسرعة: بين الأسنان، تحت الجسور، على الأطقم، وعلى طول اللثة.',
+      quicklist_title:'النسخة المختصرة',
+      quicklist:[
+        'نظّف أسنانك مرتين يومياً بفرشاة ناعمة.',
+        'نظّف بين أسنانك كل يوم بفرشاة بينية أو خيط تنظيف.',
+        'استخدم السوبرفلوس تحت الجسر كل يوم.',
+        'أخرج الطقم وانظّفه يومياً وانقعه عند الحاجة.',
+        'إذا استمر النزيف أو الألم أكثر من أسبوعين، احجز موعداً مع الطبيب.'
+      ],
+      sections:[
+        { illus:'interdental', title:'بين الأسنان', steps:['إذا دخلت الفرشاة البينية بسهولة دون ضغط، استخدمها يومياً.','إذا كانت المسافة ضيقة جداً، استخدم خيط التنظيف.','نظّف بين الأسنان أولاً ثم افرش بالمعجون.','إذا نزفت اللثة قليلاً في البداية، فهذا غالباً يعني التهاباً. نظّف بلطف ومنتظم.'] },
+        { illus:'bridge', title:'تحت الجسر', steps:['استخدم السوبرفلوس يومياً.','مرّر الطرف الصلب تحت الجسر أو تحت السلك التقويمي.','حرّك الجزء الناعم بلطف ذهاباً وإياباً على السن الداعم وأسفل الجسر.','لا تسحبه بقوة.'] },
+        { illus:'denture', title:'الطقم', steps:['أخرج الطقم يومياً ونظّفه خارج الفم.','استخدم فرشاة أطقم وسائل أو معجون أطقم مخصص.','لا تستخدم معجون الأسنان العادي أو مواد تنظيف خشنة.','انقع الطقم في محلول تنظيف مخصص عند الحاجة.'] }
+      ],
+      cards2:[
+        { title:'قاعدة مهمة', body:'القاعدة الذهبية في الفم: يجب أن تبقى الأسطح ناعمة حتى لا تتراكم الجراثيم والأطعمة. لهذا لا تستخدم معجوناً خشناً أو مواد كاشطة مع الأطقم.\n\nالتنظيف الميكانيكي هو الأهم دائماً. المضمضة لا تُعوّض الفرشاة ولا الخيط ولا السوبرفلوس.' },
+        { illus:'electric', title:'فرشاة الأسنان الكهربائية', body:'يمكن أن تكون فرشاة الأسنان الكهربائية خياراً ممتازاً لأنها تساعد على إزالة البيوفيلم بشكل أكثر انتظاماً وفعالية. تُظهر الدراسات أنها كثيراً ما تُقلّل البلاك والتهاب اللثة والنزيف أفضل من الفرشاة اليدوية.\n\nمفيدة بشكل خاص عند وجود جسور أو تقويم أو أطقم أو محدودية في الحركة.' }
+      ],
+      cards3:[
+        { illus:'floss', title:'خيط أم فرشاة بينية', body:'إذا كانت المسافة تسمح، فالفرشاة البينية هي الاختيار الأفضل عادةً لإزالة البلاك في المسافات الأوسع.\n\nخيط التنظيف مفيد جداً حيث تكون المسافة ضيقة جداً للفرشاة البينية.' },
+        { title:'متى تستخدم كلورهكسيدين', body:'يمكن أن يساعد الغسول الفموي بالكلورهكسيدين لفترة قصيرة في حالات التهاب اللثة، لكنه غير موصى به للاستخدام اليومي الطويل. التنظيف الميكانيكي دائماً أهم.' },
+        { illus:'telescope', title:'الأطقم التلسكوبية', body:'نظّف التلسكوبات الأولية في الفم كالأسنان: بفرشاة ناعمة وفرشاة أحادية الخصلة.\n\nنظّف التلسكوبات الثانوية في الطقم خارج الفم بفرشاة أطقم ومنظف لطيف. لا تفرك الأسطح الداخلية بمواد كاشطة.' }
+      ],
+      cards2b:[
+        { illus:'schedule', title:'متى تحجز موعداً', body:'', list:['إذا لم يتحسن نزيف اللثة أو حساسيتها بعد أسبوعين.','إذا كان الطعام يعلق تحت الجسر باستمرار.','إذا أسبّب الطقم ألماً أو رائحة أو تحركاً أو تقرحات.','إذا لاحظت رائحة فم كريهة مستمرة أو تراكماً سريعاً للبلاك.'] },
+        { title:'التنظيف المهني', body:'من المستحسن زيارة أخصائي نظافة الفم مرة واحدة على الأقل في السنة. إذا كان الجير أو البيوفيلم يتراكمان بسرعة فقد تحتاج زيارات أكثر.' }
+      ],
+      note:'للحصول على أفضل روتين منزلي، حافظ على البساطة: نظّف بين الأسنان كل يوم ثم افرش، احضر فحوصات منتظمة واستخدم تقنية لطيفة ومنتظمة.'
+    },
+
+    mk: {
+      dir:'ltr', htmlLang:'mk',
+      ui:{
+        brand_title:'Упатства за орална хигиена',
+        brand_sub:'мостови, меѓузабни простори и протези',
+        language_label:'Јазик',
+        references_link:'Референци',
+        references_title:'Референци',
+        references_intro:'Главни научни извори и насоки на кои се темели оваа страница.',
+        footer_text:'За сите дополнителни прашања консултирајте се со стручно лице за непца и превенција.',
+        cal_month:'АПРИЛ'
+      },
+      hero_title:'Како секој ден правилно да ги чистите забите, мостовите и протезите',
+      hero_lede:'Ова упатство е напишано директно за вас. Целта е да ги исчистите местата каде биофилмот се наталожува најбрзо: меѓу забите, под мостовите, на протезите и покрај венецот.',
+      quicklist_title:'Кратка верзија',
+      quicklist:['Четкајте ги забите 2× дневно со мека четкичка.','Чистете меѓу забите секој ден со интердентална четкичка или конец.','Користете суперфлос под мостот секој ден.','Вадете и чистете ја протезата секој ден.','Ако крвавењето или чувствителноста не поминат за 2 недели, закажете преглед.'],
+      sections:[
+        { illus:'interdental', title:'Меѓу забите', steps:['Ако интерденталната четкичка лесно поминува, користете ја секој ден.','Ако просторот е многу тесен, користете забен конец.','Прво чистете меѓу забите, потоа четкајте со паста.','Ако венецот малку крвари на почеток, тоа обично укажува на воспаление. Чистете нежно и редовно.'] },
+        { illus:'bridge', title:'Под мостот', steps:['Користете суперфлос секој ден.','Цврстиот крај провлечете под мостот.','Нежниот дел лизгајте напред-назад покрај носечкиот заб и под мостот.','Не влечете со сила.'] },
+        { illus:'denture', title:'Протезата', steps:['Вадете ја протезата секој ден и чистете ја надвор од устата.','Користете специјална четкичка и средство за протези.','Не користете обична заба паста или абразивни средства.','Накиснете ја протезата во посебен раствор за чистење.'] }
+      ],
+      cards2:[
+        { title:'Важно правило', body:'Во устата важи златното правило: површините мора да бидат мазни. Затоа не користете груби средства за протезите.\n\nМеханичкото чистење секогаш е најважно. Вода за уста не ја заменува четкичката, конецот или суперфлосот.' },
+        { illus:'electric', title:'Електрична четкичка за заби', body:'Електричната четкичка може да биде одличен избор — студиите покажуваат дека честопати подобро ги намалува плакот, гингивитот и крвавењето.\n\nПосебно е корисна ако имате мостови, апарат, протеза или ако плакот брзо се наталожува.' }
+      ],
+      cards3:[
+        { illus:'floss', title:'Конец или интердентална четкичка', body:'Ако просторот дозволува, интерденталната четкичка е обично подобриот прв избор.\n\nЗабниот конец е многу корисен таму каде контактот е претесен.' },
+        { title:'Кога да се користи хлорхексидин', body:'Водата за уста со хлорхексидин може краткорочно да помогне при воспаление на венецот, но не се препорачува за секојдневна долгорочна употреба. Механичкото чистење е секогаш поважно.' },
+        { illus:'telescope', title:'Телескопски протези', body:'Примарните телескопи во устата чистете ги како заби: со мека четкичка и поединечна четкичка.\n\nСекундарните телескопи во протезата чистете ги надвор од устата со нежно средство. Не тркалајте ги внатрешните површини со абразивни средства.' }
+      ],
+      cards2b:[
+        { illus:'schedule', title:'Кога да закажете преглед', body:'', list:['Ако крвавењето или чувствителноста не поминат за 2 недели.','Ако храната постојано заглавува под мостот.','Ако протезата жали, мириса, ни се стабилна или предизвикува рани.','Ако забележите постојан лош здив.'] },
+        { title:'Редовна професионална хигиена', body:'Препорачливо е да одите кај дентален хигиеничар барем еднаш годишно. Некои места едноставно не можат доволно добро да се исчистат дома.' }
+      ],
+      note:'За најдобра домашна рутина: секој ден чистете меѓу забите, потоа четкајте, редовни прегледи и нежна, доследна техника.'
+    },
+
+    hu: {
+      dir:'ltr', htmlLang:'hu',
+      ui:{
+        brand_title:'Szájhigiénés útmutató',
+        brand_sub:'hidak, fogközök és protézisek',
+        language_label:'Nyelv',
+        references_link:'Hivatkozások',
+        references_title:'Hivatkozások',
+        references_intro:'A lap alapjául szolgáló fő tudományos források és irányelvek.',
+        footer_text:'További kérdések esetén forduljon fogorvoshoz, dentálhigiénikushoz vagy parodontológushoz.',
+        cal_month:'ÁPRILIS'
+      },
+      hero_title:'Hogyan tisztítsa meg naponta fogait, hídjait és protézisét',
+      hero_lede:'Ezek az utasítások közvetlenül Önnek szólnak. A cél az, hogy otthon könnyebben és helyesen tisztítsa a helyeket, ahol a biofilm leggyorsabban gyűlik: a fogak között, hidak alatt, protéziseken és a fogíny mentén.',
+      quicklist_title:'Rövid változat',
+      quicklist:['Keféljem a fogamat naponta kétszer puha fogkefével.','Tisztítsa naponta a fogközöket fogköztisztító kefével vagy fogselyemmel.','Használjon szuperfloszt naponta a hídja alatt.','Vegye ki és tisztítsa meg protézisét minden nap.','Ha a vérzés vagy érzékenység 2 héten belül nem szűnik, foglaljon fogorvosi vizitet.'],
+      sections:[
+        { illus:'interdental', title:'A fogak között', steps:['Ha a fogköztisztító kefe erőltetés nélkül befér, használja naponta.','Ha a tér nagyon szűk, használjon fogselymet.','Először tisztítsa a fogközöket, majd kefélj fogkrémmel.','Ha az íny kissé vérzik eleinte, ez általában gyulladást jelez. Tisztítson finoman és rendszeresen.'] },
+        { illus:'bridge', title:'A híd alatt', steps:['Naponta használjon szuperfloszt.','Vezesse a merev végét a híd alá vagy egy ortodontiai drót alá.','A puha részt finoman mozgassa oda-vissza az alappillér fog és a híd aljától.','Ne ráncigálja és ne erőltesse.'] },
+        { illus:'denture', title:'A protézis', steps:['Vegye ki protézisét naponta és tisztítsa meg a szájon kívül.','Használjon protéziskefét és protézis-tisztítót.','Ne használjon normál fogkrémet vagy durva tisztítószereket.','Áztassa a protézist a megfelelő tisztítóoldatba, ha szükséges.'] }
+      ],
+      cards2:[
+        { title:'Fontos szabály', body:'A szájban érvényes az arany szabály: a felületek maradjanak simák. Ezért ne használjon durva pasztát vagy abrazív szereket a protézisekhez.\n\nA mechanikus tisztítás mindig a legfontosabb. A szájvíz nem helyettesíti a kefét, a fogselymet vagy a szuperfloszt.' },
+        { illus:'electric', title:'Elektromos fogkefe', body:'Az elektromos fogkefe kiváló választás lehet, mivel a tanulmányok szerint sokszor jobban csökkenti a lepedéket, gingivitist és vérzést.\n\nKülönösen hasznos hidak, fogszabályozók, protézisek esetén vagy ha a lepedék gyorsan képződik.' }
+      ],
+      cards3:[
+        { illus:'floss', title:'Fogselyem vagy fogköztisztító kefe', body:'Ha a tér megengedi, a fogköztisztító kefe általában a jobb első választás.\n\nA fogselyem nagyon hasznos ott, ahol a kapcsolat túl szoros a fogköztisztítóhoz.' },
+        { title:'Mikor alkalmazzuk a klórhexidint', body:'A klórhexidines szájvíz rövid ideig segíthet fogínygyulladás esetén, de napi hosszú távú használatra nem ajánlott. A mechanikus tisztítás mindig fontosabb.' },
+        { illus:'telescope', title:'Teleszkópos fogsor', body:'Az elsődleges teleszkópokat a szájban fogakként tisztítsa: puha kefével és egycsomós kefével.\n\nA másodlagos teleszkópokat protéziskefével és kíméletesen tisztítsa. Ne dörzsölje a belső felületeket durva szerekkel.' }
+      ],
+      cards2b:[
+        { illus:'schedule', title:'Mikor foglaljon vizitet', body:'', list:['Ha a fogínyvérzés vagy érzékenység 2 héten belül nem javul.','Ha az étel állandóan beakad a híd alá.','Ha a fogsor nyom, szaga van, laza vagy sebeket okoz.','Ha tartós szájszagot vagy gyors lepedékképzést észlel.'] },
+        { title:'Professzionális fogkőeltávolítás', body:'Érdemes évente legalább egyszer felkeresni a dentálhigiénikust. Egyes területeket otthon egyszerűen nem lehet megfelelően megtisztítani.' }
+      ],
+      note:'A legjobb otthoni rutin egyszerű: naponta fogközök, majd kefélés, rendszeres ellenőrzések és következetes, finom technika.'
+    },
+
+    ru: {
+      dir:'ltr', htmlLang:'ru',
+      ui:{
+        brand_title:'Инструкции по гигиене полости рта',
+        brand_sub:'мосты, межзубные промежутки и протезы',
+        language_label:'Язык',
+        references_link:'Источники',
+        references_title:'Источники',
+        references_intro:'Основные научные источники и рекомендации, использованные на этой странице.',
+        footer_text:'По всем дополнительным вопросам обратитесь к стоматологу, гигиенисту или пародонтологу.',
+        cal_month:'АПРЕЛЬ'
+      },
+      hero_title:'Как правильно чистить зубы, мосты и протезы каждый день',
+      hero_lede:'Эти инструкции написаны специально для вас. Цель — помочь вам очистить места, где биоплёнка накапливается быстрее всего: между зубами, под мостами, на протезах и вдоль десны.',
+      quicklist_title:'Краткая версия',
+      quicklist:['Чистите зубы 2 раза в день мягкой щёткой.','Очищайте межзубные промежутки ежедневно межзубной щёткой или нитью.','Используйте суперфлосс под мостом каждый день.','Извлекайте и очищайте протез ежедневно.','Если кровоточивость или чувствительность не прекратились через 2 недели, запишитесь к врачу.'],
+      sections:[
+        { illus:'interdental', title:'Между зубами', steps:['Если межзубная щётка входит свободно, используйте её каждый день.','Если промежуток очень узкий, используйте зубную нить.','Сначала очистите межзубные промежутки, затем чистите зубы пастой.','Если дёсны немного кровоточат поначалу, это часто признак воспаления. Чистите бережно и регулярно.'] },
+        { illus:'bridge', title:'Под мостом', steps:['Используйте суперфлосс каждый день.','Проведите жёсткий конец под мост или ортодонтическую дугу.','Мягкую часть аккуратно двигайте вперёд-назад вдоль опорного зуба и под мостом.','Не дёргайте и не прикладывайте силу.'] },
+        { illus:'denture', title:'Протез', steps:['Извлекайте протез ежедневно и очищайте вне полости рта.','Используйте специальную щётку и очиститель для протезов.','Не используйте обычную зубную пасту или абразивные средства.','Замачивайте протез в специальном чистящем растворе по инструкции.'] }
+      ],
+      cards2:[
+        { title:'Важное правило', body:'В полости рта действует золотое правило: поверхности должны оставаться гладкими. Поэтому не используйте грубые пасты или абразивы для протезов.\n\nМеханическая чистка всегда самая важная. Ополаскиватель не заменяет щётку, нить или суперфлосс.' },
+        { illus:'electric', title:'Электрическая зубная щётка', body:'Электрическая щётка может быть отличным выбором — исследования показывают, что она часто лучше снижает налёт, гингивит и кровоточивость.\n\nОсобенно полезна при наличии мостов, брекетов, протезов или быстром накоплении налёта.' }
+      ],
+      cards3:[
+        { illus:'floss', title:'Нить или межзубная щётка', body:'Если позволяет пространство, межзубная щётка обычно предпочтительнее.\n\nЗубная нить очень полезна там, где контакт слишком тесный для щётки.' },
+        { title:'Когда использовать хлоргексидин', body:'Ополаскиватель с хлоргексидином может кратковременно помочь при воспалении дёсен, но не рекомендуется для постоянного ежедневного применения. Механическая чистка всегда важнее.' },
+        { illus:'telescope', title:'Телескопические протезы', body:'Первичные телескопы чистите как зубы: мягкой щёткой и однопучковой щёткой.\n\nВторичные телескопы очищайте вне полости рта щёткой для протезов и мягким очистителем. Не трите внутренние поверхности абразивными средствами.' }
+      ],
+      cards2b:[
+        { illus:'schedule', title:'Когда записаться к врачу', body:'', list:['Если кровоточивость или чувствительность дёсен не улучшились за 2 недели.','Если пища постоянно застревает под мостом.','Если протез натирает, пахнет, шатается или вызывает язвочки.','Если замечаете стойкий запах изо рта или быстрое накопление налёта.'] },
+        { title:'Профессиональная гигиена', body:'Рекомендуется посещать гигиениста не реже одного раза в год. Некоторые зоны просто невозможно достаточно хорошо очистить дома.' }
+      ],
+      note:'Для наилучшей домашней рутины: ежедневно чистите межзубные промежутки, затем зубы, регулярные осмотры и мягкая, последовательная техника.'
+    },
+
+    uk: {
+      dir:'ltr', htmlLang:'uk',
+      ui:{
+        brand_title:'Інструкції з гігієни порожнини рота',
+        brand_sub:'мости, міжзубні проміжки та протези',
+        language_label:'Мова',
+        references_link:'Джерела',
+        references_title:'Джерела',
+        references_intro:'Основні наукові джерела та рекомендації, використані на цій сторінці.',
+        footer_text:'З усіх додаткових питань звертайтеся до стоматолога, гігієніста або пародонтолога.',
+        cal_month:'КВІТЕНЬ'
+      },
+      hero_title:'Як щодня правильно чистити зуби, мости та протези',
+      hero_lede:'Ці інструкції написані спеціально для вас. Мета — допомогти вам очистити місця, де біоплівка накопичується найшвидше: між зубами, під мостами, на протезах та вздовж ясен.',
+      quicklist_title:'Коротка версія',
+      quicklist:['Чистіть зуби 2 рази на день м\'якою щіткою.','Очищуйте міжзубні проміжки щодня міжзубною щіткою або ниткою.','Використовуйте суперфлос під мостом щодня.','Знімайте та очищуйте протез щодня.','Якщо кровоточивість або чутливість не зникли за 2 тижні, запишіться до лікаря.'],
+      sections:[
+        { illus:'interdental', title:'Між зубами', steps:['Якщо міжзубна щітка входить вільно, використовуйте її щодня.','Якщо проміжок дуже вузький, використовуйте зубну нитку.','Спочатку очистіть міжзубні проміжки, потім чистіть зуби пастою.','Якщо ясна трохи кровоточать спочатку, це часто ознака запалення. Чистіть обережно і регулярно.'] },
+        { illus:'bridge', title:'Під мостом', steps:['Використовуйте суперфлос щодня.','Проведіть жорсткий кінець під міст або ортодонтичну дугу.','М\'яку частину обережно рухайте вперед-назад вздовж опорного зуба і під мостом.','Не тягніть і не докладайте сили.'] },
+        { illus:'denture', title:'Протез', steps:['Знімайте протез щодня і очищайте поза ротом.','Використовуйте спеціальну щітку та засіб для протезів.','Не використовуйте звичайну зубну пасту або абразивні засоби.','Замочуйте протез у спеціальному розчині для чищення.'] }
+      ],
+      cards2:[
+        { title:'Важливе правило', body:'У роті діє золоте правило: поверхні мають бути гладкими. Тому не використовуйте грубі пасти або абразиви для протезів.\n\nМеханічне чищення завжди найважливіше. Ополіскувач не замінює щітку, нитку або суперфлос.' },
+        { illus:'electric', title:'Електрична зубна щітка', body:'Електрична щітка може бути відмінним вибором — дослідження показують, що вона часто краще знижує наліт, гінгівіт і кровоточивість.\n\nОсобливо корисна при мостах, брекетах, протезах або швидкому накопиченні нальоту.' }
+      ],
+      cards3:[
+        { illus:'floss', title:'Нитка або міжзубна щітка', body:'Якщо дозволяє простір, міжзубна щітка зазвичай краща.\n\nЗубна нитка дуже корисна там, де контакт надто тісний для щітки.' },
+        { title:'Коли використовувати хлоргексидин', body:'Ополіскувач з хлоргексидином може короткочасно допомогти при запаленні ясен, але не рекомендується для постійного щоденного вживання. Механічне чищення завжди важливіше.' },
+        { illus:'telescope', title:'Телескопічні протези', body:'Первинні телескопи чистіть як зуби: м\'якою щіткою та однопучковою щіткою.\n\nВторинні телескопи очищуйте поза ротом щіткою для протезів і м\'яким засобом. Не труть внутрішні поверхні абразивами.' }
+      ],
+      cards2b:[
+        { illus:'schedule', title:'Коли записатися до лікаря', body:'', list:['Якщо кровоточивість або чутливість ясен не покращились за 2 тижні.','Якщо їжа постійно застрягає під мостом.','Якщо протез натирає, пахне, хитається або спричиняє виразки.','Якщо помічаєте стійкий запах з рота або швидке накопичення нальоту.'] },
+        { title:'Професійна гігієна', body:'Рекомендується відвідувати гігієніста не рідше одного разу на рік. Деякі зони просто неможливо достатньо добре очистити вдома.' }
+      ],
+      note:'Для найкращої домашньої рутини: щодня очищуйте міжзубні проміжки, потім чистіть зуби, регулярні огляди та м\'яка, послідовна техника.'
+    }
+  };
+
+  /* Dialectal variants inherit from Slovenian */
+  ['st','ko','pr','pm','lj'].forEach(code => {
+    const titleMap = {
+      st:'Kak si vsak dan dobro spucaš zobe, mostiček pa protezo',
+      ko:'Kak si vsak dan dobro spucaš zobe, most pa protezo',
+      pr:'Kako si vsak dan dobro umiješ zobe, mostiček in protezo',
+      pm:'Kak si vsak den dobro spucaš zobe, mostek pa protezo',
+      lj:'Kako si vsak dan dobro spucaš zobe, mostiček in protezo'
+    };
+    const subMap = {
+      st:'mostički, medzobni prostori pa proteze',
+      ko:'mosti, medzobni prostori pa proteze',
+      pr:'mostički, medzobni prostori in proteze',
+      pm:'mosteki, medzobni prostori pa proteze',
+      lj:'mostički, medzobni prostori in proteze'
+    };
+    const ql1 = {
+      st:'Na kratko', ko:'Na kratko', pr:'Na kratko', pm:'Na kratko', lj:'Na kratko'
+    };
+    const base = langs.sl;
+    langs[code] = JSON.parse(JSON.stringify(base));
+    langs[code].htmlLang = 'sl';
+    langs[code].ui.brand_sub = subMap[code];
+    langs[code].hero_title = titleMap[code];
+    langs[code].quicklist_title = ql1[code];
+  });
+
+  /* ── REFERENCES HTML ── */
+  const refHTML = `<section class="container" id="reference" style="padding-bottom:2rem">
+    <div class="card">
+      <h2 id="references_title">Reference</h2>
+      <p class="lede" id="references_intro" style="margin-bottom:1rem"></p>
+      <div class="reference-list">
+        ${[
+          ['Home use of interdental cleaning devices, in addition to toothbrushing','https://pmc.ncbi.nlm.nih.gov/articles/PMC6953268/'],
+          ['A Network Meta-analysis of Interproximal Oral Hygiene Methods','https://pmc.ncbi.nlm.nih.gov/articles/PMC5984142/'],
+          ['EFP guidance on interdental cleaning','https://www.efp.org/news-events/news/efp-provides-clear-guidance-to-public-on-interdental-cleaning-in-response-to-media-controversy/'],
+          ['Evidence-based strategies for interdental cleaning','https://pubmed.ncbi.nlm.nih.gov/32954389/'],
+          ['Influence of oral hygiene on mucosal conditions beneath bridge pontics','https://pubmed.ncbi.nlm.nih.gov/3321391/'],
+          ['Evidence-based guidelines for the care and maintenance of complete dentures','https://www.prosthodontics.org/assets/1/7/7._JOP_Denture_Care_Guidelines_Supplement1.pdf'],
+          ['Denture care and maintenance','https://www.ada.org/resources/ada-library/oral-health-topics/dentures'],
+          ['The efficacy of powered toothbrushes','https://pmc.ncbi.nlm.nih.gov/articles/PMC9303421/'],
+          ['Mouthrinse (Mouthwash)','https://www.ada.org/resources/ada-library/oral-health-topics/mouthrinse-mouthwash'],
+          ['Oral hygiene aids','https://www.periodontalcare.sdcep.org.uk/guidance/treatment-components/managing-risk-factors/oral-hygiene/oral-hygiene-aids/'],
+          ['Interdental brushes versus dental floss','https://pubmed.ncbi.nlm.nih.gov/9706852/'],
+          ['Effect of toothbrushing and flossing sequence','https://pubmed.ncbi.nlm.nih.gov/29741239/'],
+          ['Effect of denture cleaning on abrasion resistance','https://pmc.ncbi.nlm.nih.gov/articles/PMC5498689/']
+        ].map(([t,u])=>`<div class="reference-item"><strong>${t}</strong><br><a href="${u}" target="_blank" rel="noopener noreferrer">${u}</a></div>`).join('')}
+      </div>
+    </div>
+  </section>`;
+
+  /* ── RENDER ENGINE ── */
+  function buildCard(c, size) {
+    if(c.illus) {
+      return `<article class="illus-card">
+        <div class="illus-top">${SVG[c.illus]||''}</div>
+        <div class="illus-body">
+          <h3>${c.title}</h3>
+          ${c.steps ? `<ol class="steps">${c.steps.map(s=>`<li>${s}</li>`).join('')}</ol>` : ''}
+          ${c.list  ? `<ul class="clean" style="margin-top:.6rem">${c.list.map(s=>`<li>${s}</li>`).join('')}</ul>` : ''}
+          ${c.body  ? c.body.split('\n\n').map(p=>`<p>${p}</p>`).join('') : ''}
+        </div>
+      </article>`;
+    }
+    return `<article class="card">
+      <h${size||3}>${c.title}</h${size||3}>
+      ${c.steps ? `<ol class="steps">${c.steps.map(s=>`<li>${s}</li>`).join('')}</ol>` : ''}
+      ${c.list  ? `<ul class="clean" style="margin-top:.6rem">${c.list.map(s=>`<li>${s}</li>`).join('')}</ul>` : ''}
+      ${c.body  ? c.body.split('\n\n').map(p=>`<p>${p}</p>`).join('') : ''}
+    </article>`;
+  }
+
+  function render(langCode) {
+    const lang = langs[langCode] || langs.sl;
+    const d = document.documentElement;
+    d.lang = lang.htmlLang || langCode;
+    d.dir  = lang.dir || 'ltr';
+    document.body.dir = lang.dir || 'ltr';
+
+    // Update header labels
+    const ui = lang.ui;
+    document.getElementById('brand_title').textContent    = ui.brand_title;
+    document.getElementById('brand_sub').textContent      = ui.brand_sub;
+    document.getElementById('language_label').textContent = ui.language_label;
+    document.getElementById('references_link').textContent= ui.references_link;
+    document.getElementById('footer_text').textContent    = ui.footer_text;
+
+    // Build page
+    const heroCard = `<aside class="hero-card">
+      <h2>${lang.quicklist_title}</h2>
+      <ul class="clean">${lang.quicklist.map(i=>`<li>${i}</li>`).join('')}</ul>
+    </aside>`;
+
+    const sectionsHTML = `<section class="container">
+      <div class="grid three">
+        ${lang.sections.map(s=>buildCard(s)).join('')}
+      </div>
+    </section>`;
+
+    const cards2HTML = `<section class="container">
+      <div class="grid two">
+        ${lang.cards2.map(c=>buildCard(c,2)).join('')}
+      </div>
+    </section>`;
+
+    const cards3HTML = `<section class="container">
+      <div class="grid three">
+        ${lang.cards3.map(c=>buildCard(c,3)).join('')}
+      </div>
+    </section>`;
+
+    const cards2bHTML = `<section class="container">
+      <div class="grid two">
+        ${lang.cards2b.map(c=>buildCard(c,2)).join('')}
+      </div>
+      <div class="note">${lang.note}</div>
+    </section>`;
+
+    document.getElementById('main').innerHTML = `
+      <section class="hero container" id="top">
+        <div class="hero-grid">
+          <div>
+            <h1>${lang.hero_title}</h1>
+            <p class="lede">${lang.hero_lede}</p>
+          </div>
+          ${heroCard}
+        </div>
+      </section>
+      ${sectionsHTML}
+      ${cards2HTML}
+      ${cards3HTML}
+      ${cards2bHTML}
+      ${refHTML}
+    `;
+
+    // Update refs
+    const rTitle = document.getElementById('references_title');
+    const rIntro = document.getElementById('references_intro');
+    if(rTitle) rTitle.textContent = ui.references_title;
+    if(rIntro) rIntro.textContent = ui.references_intro;
+
+    // Calendar month label in SVG
+    const calEl = document.getElementById('cal-month');
+    if(calEl) calEl.textContent = ui.cal_month || 'APRIL';
+  }
+
+  /* ── EVENTS ── */
+  document.getElementById('languageSelect').addEventListener('change', e => render(e.target.value));
+  render('sl');
+})();
+</script>
+<script data-pplx-inline-edit>
+(function(){
+  if(window===window.top)return;
+  function inlineAll(orig,clone){
+    if(orig.nodeType!==1)return;
+    try{
+      var cs=getComputedStyle(orig);
+      var t='';
+      for(var i=0;i<cs.length;i++){t+=cs[i]+':'+cs.getPropertyValue(cs[i])+';';}
+      clone.style.cssText=t;
+    }catch(e){}
+    var oc=orig.children,cc=clone.children;
+    for(var j=0;j<oc.length&&j<cc.length;j++){inlineAll(oc[j],cc[j]);}
+  }
+  function stripExternal(clone){
+    var imgs=clone.querySelectorAll('img');
+    for(var i=0;i<imgs.length;i++){
+      var s=imgs[i].getAttribute('src');
+      if(s&&!s.startsWith('data:'))imgs[i].removeAttribute('src');
+    }
+    var all=clone.querySelectorAll('*');
+    for(var i=0;i<all.length;i++){
+      var st=all[i].style.cssText;
+      if(st&&st.indexOf('url(')>=0){
+        all[i].style.cssText=st.replace(/url\(["']?(?!data:)[^)"']*["']?\)/gi,'none');
+      }
+    }
+  }
+  window.addEventListener('message',function(e){
+    if(!e.data||e.data.type!=='INLINE_EDIT_CAPTURE_REQUEST')return;
+    var scrollX=window.scrollX||window.pageXOffset||0;
+    var scrollY=window.scrollY||window.pageYOffset||0;
+    var w=window.innerWidth,h=window.innerHeight;
+    try{
+      var clone=document.documentElement.cloneNode(true);
+      var rm=clone.querySelectorAll('script,link[rel="stylesheet"],style');
+      for(var i=0;i<rm.length;i++){rm[i].remove();}
+      inlineAll(document.documentElement,clone);
+      stripExternal(clone);
+      var html=new XMLSerializer().serializeToString(clone);
+      var svg='<svg xmlns="http://www.w3.org/2000/svg" width="'+w+'" height="'+h+'">'
+        +'<foreignObject width="100%" height="100%">'
+        +'<div xmlns="http://www.w3.org/1999/xhtml" style="width:'+w+'px;height:'+h+'px;overflow:hidden">'
+        +'<div style="transform:translate(-'+scrollX+'px,-'+scrollY+'px);transform-origin:top left">'
+        +html+'</div></div></foreignObject></svg>';
+      var svgUrl='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);
+      var img=new Image();
+      img.onload=function(){
+        var c=document.createElement('canvas');c.width=w;c.height=h;
+        c.getContext('2d').drawImage(img,0,0);
+        window.parent.postMessage({type:'INLINE_EDIT_SCREENSHOT_RESULT',dataUrl:c.toDataURL('image/png'),scrollX:scrollX,scrollY:scrollY},'*');
+      };
+      img.onerror=function(){
+        window.parent.postMessage({type:'INLINE_EDIT_SCREENSHOT_RESULT',dataUrl:null,scrollX:scrollX,scrollY:scrollY},'*');
+      };
+      img.src=svgUrl;
+    }catch(err){
+      window.parent.postMessage({type:'INLINE_EDIT_SCREENSHOT_RESULT',dataUrl:null,scrollX:scrollX,scrollY:scrollY},'*');
+    }
+  });
+})();
+</script></body>
+</html>
