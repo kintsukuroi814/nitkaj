@@ -18,13 +18,7 @@
       --content:1140px;
       --bg-orb-1: rgba(0,133,122,.13); --bg-orb-2: rgba(26,111,168,.10); --bg-orb-3: rgba(0,133,122,.07);
     }
-    [data-theme="dark"] {
-      --bg: #0f1a18; --surface: #172220; --surface-2: #1e2e2b; --border: #2a3d39;
-      --text: #ddeae7; --muted: #8ab5ae; --faint: #5a8078;
-      --accent: #3fbfb4; --accent-h: #5ccfc4; --blue: #6aaed8;
-      --sh-sm: 0 2px 10px rgba(0,0,0,.3); --sh-md: 0 16px 40px rgba(0,0,0,.45);
-      --bg-orb-1: rgba(63,191,180,.10); --bg-orb-2: rgba(106,174,216,.08); --bg-orb-3: rgba(63,191,180,.05);
-    }
+
 
     /* ── RESET ── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -194,12 +188,12 @@
       display: flex; flex-direction: column;
     }
     .illus-top {
-      padding: 1.8rem 2rem 1.2rem;
+      padding: 2.2rem 1.8rem 1.6rem;
       background: linear-gradient(150deg, color-mix(in srgb, var(--accent) 9%, var(--surface)), var(--surface));
       border-radius: var(--r-lg) var(--r-lg) 0 0;
       display: flex; justify-content: center;
     }
-    .illus-top svg { width: 100%; max-width: 220px; height: auto; }
+    .illus-top svg { width: 100%; max-width: 260px; height: auto; min-height: 160px; }
     .illus-body { padding: 1.2rem 1.5rem 1.4rem; }
 
     /* ── NOTE ── */
@@ -291,7 +285,48 @@
     /* ── FOOTER ── */
     footer { padding: 2.5rem 0 3.5rem; color: var(--muted); font-size: .9rem; border-top: 1px solid var(--border); margin-top: 1rem; }
 
-    /* ── RESPONSIVE ── */
+    /* ── REFERENCES ACCORDION ── */
+  .ref-accordion {
+    border-radius: var(--radius);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 0;
+    overflow: hidden;
+  }
+  .ref-accordion summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.1rem 1.4rem;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1.05rem;
+    list-style: none;
+    user-select: none;
+    gap: .6rem;
+    color: var(--text);
+  }
+  .ref-accordion summary::-webkit-details-marker { display: none; }
+  .ref-accordion summary:hover { background: var(--hover-bg, rgba(0,0,0,.03)); }
+  .ref-accordion[open] summary { border-bottom: 1px solid var(--border); }
+  .ref-accordion .ref-chevron { flex-shrink: 0; transition: transform .25s ease; color: var(--accent); }
+  .ref-accordion[open] .ref-chevron { transform: rotate(180deg); }
+  .ref-accordion .reference-list,
+  .ref-accordion .lede {
+    padding: 0 1.4rem;
+  }
+  .ref-accordion .lede { padding-top: .8rem; }
+  .ref-accordion .reference-list { padding-bottom: 1.2rem; }
+
+  /* ── INDIVIDUAL PLAN NOTE ── */
+  .indiv-plan-note {
+    border-radius: var(--radius);
+    background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 8%, var(--surface)), var(--surface));
+    border: 1px solid color-mix(in srgb, var(--accent) 25%, var(--border));
+    padding: 1.2rem 1.4rem;
+  }
+
+  /* ── RESPONSIVE ── */
     @media (max-width: 900px) {
       .hero-grid, .three, .two { grid-template-columns: 1fr; }
       .topbar { flex-direction: column; align-items: flex-start; }
@@ -346,8 +381,7 @@
         <option value="pm">🌿 Prekmurski</option>
         <option value="lj">🌿 Ljubljanski</option>
       </select>
-      <a class="btn-compact" href="#reference" id="references_link">Reference</a>
-      <button class="btn-compact" type="button" id="themeBtn" aria-label="Preklopi temo">🌙</button>
+
     </div>
   </div>
 </header>
@@ -373,175 +407,144 @@
     bc.appendChild(b);
   }
 
-  /* ── THEME ── */
-  const root = document.documentElement;
-  const themeBtn = document.getElementById('themeBtn');
-  let theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-  root.setAttribute('data-theme', theme);
-  const syncTheme = () => themeBtn.textContent = root.getAttribute('data-theme')==='dark' ? '☀️' : '🌙';
-  syncTheme();
-  themeBtn.addEventListener('click', ()=>{
-    root.setAttribute('data-theme', root.getAttribute('data-theme')==='dark'?'light':'dark');
-    syncTheme();
-  });
+  /* theme locked to light */
 
   /* ── SVG ILLUSTRATIONS ── */
   const SVG = {
     interdental: `<svg viewBox="0 0 220 160" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <!-- Two teeth -->
-      <rect x="28" y="40" width="52" height="90" rx="12" fill="white" stroke="#cddbd7" stroke-width="2"/>
-      <rect x="28" y="40" width="52" height="20" rx="6" fill="#e8f5f3"/>
-      <!-- gap -->
-      <rect x="140" y="40" width="52" height="90" rx="12" fill="white" stroke="#cddbd7" stroke-width="2"/>
-      <rect x="140" y="40" width="52" height="20" rx="6" fill="#e8f5f3"/>
-      <!-- interdental brush -->
-      <rect x="97" y="72" width="26" height="5" rx="2.5" fill="#00857a"/>
-      <line x1="82" y1="74.5" x2="97" y2="74.5" stroke="#888" stroke-width="2.5" stroke-linecap="round"/>
-      <!-- bristles -->
-      <g stroke="#00857a" stroke-width="1.5" stroke-linecap="round">
-        <line x1="100" y1="69" x2="100" y2="64"/><line x1="100" y1="80" x2="100" y2="85"/>
-        <line x1="104" y1="68" x2="104" y2="63"/><line x1="104" y1="81" x2="104" y2="86"/>
-        <line x1="108" y1="69" x2="108" y2="64"/><line x1="108" y1="80" x2="108" y2="85"/>
-        <line x1="112" y1="68" x2="112" y2="63"/><line x1="112" y1="81" x2="112" y2="86"/>
-        <line x1="116" y1="69" x2="116" y2="64"/><line x1="116" y1="80" x2="116" y2="85"/>
-        <line x1="120" y1="68" x2="120" y2="63"/><line x1="120" y1="81" x2="120" y2="86"/>
-      </g>
-      <!-- plaque dots being removed -->
-      <circle cx="134" cy="72" r="3" fill="#00857a" opacity=".4"/>
-      <circle cx="138" cy="76" r="2" fill="#00857a" opacity=".3"/>
-    </svg>`,
+  <rect x="28" y="38" width="52" height="92" rx="13" fill="white" stroke="#cddbd7" stroke-width="2"/>
+  <rect x="28" y="38" width="52" height="22" rx="8" fill="#e8f5f3"/>
+  <rect x="140" y="38" width="52" height="92" rx="13" fill="white" stroke="#cddbd7" stroke-width="2"/>
+  <rect x="140" y="38" width="52" height="22" rx="8" fill="#e8f5f3"/>
+  <rect x="96" y="70" width="28" height="6" rx="3" fill="#00857a"/>
+  <line x1="78" y1="73" x2="96" y2="73" stroke="#7a9992" stroke-width="3" stroke-linecap="round"/>
+  <g stroke="#00857a" stroke-width="1.6" stroke-linecap="round">
+    <line x1="100" y1="70" x2="100" y2="63"/><line x1="100" y1="76" x2="100" y2="83"/>
+    <line x1="105" y1="69" x2="105" y2="62"/><line x1="105" y1="77" x2="105" y2="84"/>
+    <line x1="110" y1="70" x2="110" y2="63"/><line x1="110" y1="76" x2="110" y2="83"/>
+    <line x1="115" y1="69" x2="115" y2="62"/><line x1="115" y1="77" x2="115" y2="84"/>
+    <line x1="120" y1="70" x2="120" y2="63"/><line x1="120" y1="76" x2="120" y2="83"/>
+  </g>
+  <circle cx="138" cy="71" r="3.5" fill="#00857a" opacity=".35"/>
+  <circle cx="135" cy="78" r="2.5" fill="#00857a" opacity=".25"/>
+</svg>`,
 
-    bridge: `<svg viewBox="0 0 220 160" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <!-- Left abutment tooth -->
-      <rect x="14" y="42" width="48" height="88" rx="11" fill="white" stroke="#cddbd7" stroke-width="2"/>
-      <rect x="14" y="42" width="48" height="18" rx="6" fill="#e8f5f3"/>
-      <!-- Bridge pontic -->
-      <rect x="62" y="58" width="96" height="72" rx="10" fill="#f0faf9" stroke="#cddbd7" stroke-width="2" stroke-dasharray="4 3"/>
-      <text x="110" y="100" text-anchor="middle" font-size="11" fill="#7a9992" font-family="Satoshi,sans-serif">mostiček</text>
-      <!-- Right abutment tooth -->
-      <rect x="158" y="42" width="48" height="88" rx="11" fill="white" stroke="#cddbd7" stroke-width="2"/>
-      <rect x="158" y="42" width="48" height="18" rx="6" fill="#e8f5f3"/>
-      <!-- Superfloss path -->
-      <path d="M 38 155 Q 110 125 182 155" stroke="#00857a" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="5 3" fill="none"/>
-      <!-- Arrow -->
-      <path d="M180 148 L182 155 L175 154" stroke="#00857a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-    </svg>`,
+        bridge: `<svg viewBox="0 0 220 160" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <rect x="12" y="40" width="50" height="90" rx="12" fill="white" stroke="#cddbd7" stroke-width="2"/>
+  <rect x="12" y="40" width="50" height="20" rx="7" fill="#e8f5f3"/>
+  <rect x="62" y="56" width="96" height="74" rx="11" fill="#f0faf9" stroke="#cddbd7" stroke-width="2" stroke-dasharray="5 3"/>
+  <rect x="158" y="40" width="50" height="90" rx="12" fill="white" stroke="#cddbd7" stroke-width="2"/>
+  <rect x="158" y="40" width="50" height="20" rx="7" fill="#e8f5f3"/>
+  <path d="M 37 150 Q 110 122 183 150" stroke="#00857a" stroke-width="2.8" stroke-linecap="round" stroke-dasharray="6 3" fill="none"/>
+  <path d="M181 143 L183 150 L177 149" stroke="#00857a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+</svg>`,
 
-    denture: `<svg viewBox="0 0 220 160" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <!-- Denture base -->
-      <path d="M30 90 Q30 50 110 45 Q190 50 190 90 Q190 130 110 132 Q30 130 30 90Z" fill="#ffe0e0" stroke="#f5c6c6" stroke-width="2"/>
-      <!-- Teeth on denture -->
-      <g fill="white" stroke="#cddbd7" stroke-width="1.5">
-        <rect x="55" y="52" width="18" height="32" rx="5"/>
-        <rect x="75" y="48" width="20" height="36" rx="5"/>
-        <rect x="97" y="46" width="20" height="38" rx="5"/>
-        <rect x="119" y="48" width="20" height="36" rx="5"/>
-        <rect x="141" y="52" width="18" height="32" rx="5"/>
-      </g>
-      <!-- Denture brush -->
-      <rect x="78" y="112" width="64" height="12" rx="6" fill="#00857a"/>
-      <g stroke="white" stroke-width="1.2" stroke-linecap="round">
-        <line x1="84" y1="112" x2="84" y2="104"/><line x1="90" y1="112" x2="90" y2="104"/>
-        <line x1="96" y1="112" x2="96" y2="104"/><line x1="102" y1="112" x2="102" y2="104"/>
-        <line x1="108" y1="112" x2="108" y2="104"/><line x1="114" y1="112" x2="114" y2="104"/>
-        <line x1="120" y1="112" x2="120" y2="104"/><line x1="126" y1="112" x2="126" y2="104"/>
-									 <line x1="132" y1="112" x2="132" y2="104"/>
-      </g>
-      <!-- Handle -->
-      <rect x="142" y="115" width="40" height="6" rx="3" fill="#006b62"/>
-    </svg>`,
+        denture: `<svg viewBox="0 0 220 160" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <path d="M30 90 Q30 50 110 45 Q190 50 190 90 Q190 130 110 132 Q30 130 30 90Z" fill="#ffe0e0" stroke="#f5c6c6" stroke-width="2"/>
+  <g fill="white" stroke="#cddbd7" stroke-width="1.5">
+    <rect x="55" y="52" width="18" height="32" rx="5"/>
+    <rect x="75" y="48" width="20" height="36" rx="5"/>
+    <rect x="97" y="46" width="20" height="38" rx="5"/>
+    <rect x="119" y="48" width="20" height="36" rx="5"/>
+    <rect x="141" y="52" width="18" height="32" rx="5"/>
+  </g>
+  <rect x="76" y="112" width="68" height="13" rx="6.5" fill="#00857a"/>
+  <g stroke="white" stroke-width="1.3" stroke-linecap="round">
+    <line x1="83" y1="112" x2="83" y2="103"/><line x1="89" y1="112" x2="89" y2="103"/>
+    <line x1="95" y1="112" x2="95" y2="103"/><line x1="101" y1="112" x2="101" y2="103"/>
+    <line x1="107" y1="112" x2="107" y2="103"/><line x1="113" y1="112" x2="113" y2="103"/>
+    <line x1="119" y1="112" x2="119" y2="103"/><line x1="125" y1="112" x2="125" y2="103"/>
+    <line x1="131" y1="112" x2="131" y2="103"/><line x1="137" y1="112" x2="137" y2="103"/>
+  </g>
+  <rect x="144" y="114" width="38" height="7" rx="3.5" fill="#006b62"/>
+</svg>`,
 
-    electric: `<svg viewBox="0 0 220 160" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <!-- Toothbrush handle -->
-      <rect x="95" y="100" width="28" height="55" rx="8" fill="linear-gradient(180deg,#00857a,#006b62)" stroke="#006b62" stroke-width="1.5"/>
-      <rect x="95" y="100" width="28" height="55" rx="8" fill="#00857a"/>
-      <rect x="100" y="108" width="18" height="8" rx="4" fill="#006b62" opacity=".5"/>
-      <!-- Brush head -->
-      <rect x="98" y="55" width="22" height="46" rx="6" fill="#e8f5f3" stroke="#cddbd7" stroke-width="1.5"/>
-      <ellipse cx="109" cy="66" rx="9" ry="6" fill="white" stroke="#cddbd7" stroke-width="1.5"/>
-      <!-- Bristles -->
-      <g stroke="#00857a" stroke-width="1.3" stroke-linecap="round">
-        <line x1="103" y1="66" x2="103" y2="56"/>
-        <line x1="107" y1="65" x2="107" y2="55"/>
-        <line x1="111" y1="65" x2="111" y2="55"/>
-        <line x1="115" y1="66" x2="115" y2="56"/>
-      </g>
-      <!-- Spin lines -->
-      <path d="M88 68 Q82 62 88 56" stroke="#00857a" stroke-width="1.5" stroke-linecap="round" fill="none" stroke-dasharray="3 2"/>
-      <path d="M130 68 Q136 62 130 56" stroke="#00857a" stroke-width="1.5" stroke-linecap="round" fill="none" stroke-dasharray="3 2"/>
-      <!-- Plaque removed -->
-      <circle cx="75" cy="75" r="4" fill="#ffd700" opacity=".5"/>
-      <circle cx="70" cy="65" r="3" fill="#ffd700" opacity=".35"/>
-      <circle cx="78" cy="60" r="2.5" fill="#ffd700" opacity=".25"/>
-      <!-- Tooth behind -->
-      <rect x="58" y="40" width="34" height="70" rx="10" fill="white" stroke="#cddbd7" stroke-width="2" opacity=".5"/>
-    </svg>`,
+        electric: `<svg viewBox="0 0 220 160" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <rect x="58" y="38" width="36" height="72" rx="10" fill="white" stroke="#cddbd7" stroke-width="2" opacity=".6"/>
+  <rect x="94" y="95" width="30" height="58" rx="9" fill="#00857a"/>
+  <rect x="97" y="104" width="24" height="9" rx="4.5" fill="#006b62" opacity=".5"/>
+  <rect x="97" y="52" width="24" height="48" rx="7" fill="#edf8f7" stroke="#cddbd7" stroke-width="1.5"/>
+  <circle cx="109" cy="64" r="12" fill="white" stroke="#cddbd7" stroke-width="1.5"/>
+  <g stroke="#00857a" stroke-width="1.5" stroke-linecap="round">
+    <line x1="103" y1="64" x2="103" y2="54"/><line x1="109" y1="63" x2="109" y2="53"/><line x1="115" y1="64" x2="115" y2="54"/>
+    <line x1="101" y1="68" x2="95" y2="68"/><line x1="117" y1="68" x2="123" y2="68"/>
+    <line x1="103" y1="72" x2="103" y2="80"/><line x1="109" y1="73" x2="109" y2="81"/><line x1="115" y1="72" x2="115" y2="80"/>
+  </g>
+  <path d="M95 57 Q88 64 95 71" stroke="#00857a" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+  <path d="M123 57 Q130 64 123 71" stroke="#00857a" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+  <circle cx="74" cy="80" r="4" fill="#ffe066" opacity=".5"/>
+  <circle cx="69" cy="69" r="3" fill="#ffe066" opacity=".35"/>
+  <circle cx="78" cy="62" r="2.5" fill="#ffe066" opacity=".25"/>
+</svg>`,
 
-    floss: `<svg viewBox="0 0 220 160" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <!-- Floss container -->
-      <rect x="70" y="20" width="80" height="55" rx="12" fill="#00857a" opacity=".15" stroke="#00857a" stroke-width="1.5"/>
-      <circle cx="110" cy="47" r="20" fill="#00857a" opacity=".2"/>
-      <circle cx="110" cy="47" r="12" fill="#00857a" opacity=".3"/>
-      <text x="110" y="52" text-anchor="middle" font-size="11" fill="#00857a" font-weight="700" font-family="Satoshi,sans-serif">floss</text>
-      <!-- Teeth -->
-      <rect x="20" y="68" width="44" height="72" rx="10" fill="white" stroke="#cddbd7" stroke-width="2"/>
-      <rect x="156" y="68" width="44" height="72" rx="10" fill="white" stroke="#cddbd7" stroke-width="2"/>
-      <!-- Floss between teeth -->
-      <path d="M64 100 L64 85 Q64 75 80 75 L110 75 L140 75 Q156 75 156 85 L156 100" stroke="#00857a" stroke-width="2.5" stroke-linecap="round" fill="none"/>
-      <!-- Plaque spots -->
-      <circle cx="88" cy="90" r="3.5" fill="#00857a" opacity=".4"/>
-      <circle cx="110" cy="80" r="3" fill="#00857a" opacity=".3"/>
-      <circle cx="132" cy="90" r="3.5" fill="#00857a" opacity=".4"/>
-    </svg>`,
+        floss: `<svg viewBox="0 0 220 160" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <rect x="70" y="18" width="80" height="56" rx="13" fill="#00857a" opacity=".13" stroke="#00857a" stroke-width="1.5"/>
+  <circle cx="110" cy="46" r="21" fill="#00857a" opacity=".18"/>
+  <circle cx="110" cy="46" r="12" fill="#00857a" opacity=".28"/>
+  <text x="110" y="51" text-anchor="middle" font-size="11" fill="#00857a" font-weight="700" font-family="Satoshi,sans-serif">floss</text>
+  <rect x="18" y="68" width="46" height="74" rx="11" fill="white" stroke="#cddbd7" stroke-width="2"/>
+  <rect x="156" y="68" width="46" height="74" rx="11" fill="white" stroke="#cddbd7" stroke-width="2"/>
+  <path d="M64 102 L64 86 Q64 75 80 75 L110 75 L140 75 Q156 75 156 86 L156 102" stroke="#00857a" stroke-width="2.8" stroke-linecap="round" fill="none"/>
+  <circle cx="90" cy="90" r="3.5" fill="#00857a" opacity=".4"/>
+  <circle cx="110" cy="80" r="3" fill="#00857a" opacity=".3"/>
+  <circle cx="130" cy="90" r="3.5" fill="#00857a" opacity=".4"/>
+</svg>`,
 
-    telescope: `<svg viewBox="0 0 220 160" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <!-- Primary telescope (in mouth) -->
-      <rect x="30" y="50" width="40" height="75" rx="9" fill="white" stroke="#cddbd7" stroke-width="2"/>
-      <!-- Secondary cap -->
-      <rect x="28" y="42" width="44" height="22" rx="8" fill="#e8f5f3" stroke="#00857a" stroke-width="1.5"/>
-      <text x="50" y="57" text-anchor="middle" font-size="9" fill="#00857a" font-family="Satoshi,sans-serif">1°</text>
-      <!-- Primary telescope right -->
-      <rect x="150" y="50" width="40" height="75" rx="9" fill="white" stroke="#cddbd7" stroke-width="2"/>
-      <rect x="148" y="42" width="44" height="22" rx="8" fill="#e8f5f3" stroke="#00857a" stroke-width="1.5"/>
-      <text x="170" y="57" text-anchor="middle" font-size="9" fill="#00857a" font-family="Satoshi,sans-serif">1°</text>
-      <!-- Denture frame with secondaries -->
-      <path d="M72 58 Q110 30 148 58" fill="none" stroke="#cddbd7" stroke-width="3" stroke-linecap="round"/>
-      <rect x="90" y="36" width="40" height="20" rx="8" fill="#ffe0e0" stroke="#f5c6c6" stroke-width="1.5"/>
-      <text x="110" y="50" text-anchor="middle" font-size="9" fill="#c0504d" font-family="Satoshi,sans-serif">2°</text>
-      <!-- Single tuft brush -->
-      <line x1="110" y1="115" x2="110" y2="145" stroke="#888" stroke-width="2" stroke-linecap="round"/>
-      <ellipse cx="110" cy="113" rx="5" ry="4" fill="#00857a"/>
-      <g stroke="white" stroke-width="1" stroke-linecap="round">
-        <line x1="107" y1="113" x2="107" y2="107"/>
-        <line x1="110" y1="112" x2="110" y2="106"/>
-        <line x1="113" y1="113" x2="113" y2="107"/>
-      </g>
-    </svg>`,
+        telescope: `<svg viewBox="0 0 220 160" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <rect x="28" y="50" width="42" height="78" rx="10" fill="white" stroke="#cddbd7" stroke-width="2"/>
+  <rect x="26" y="41" width="46" height="23" rx="9" fill="#e8f5f3" stroke="#00857a" stroke-width="1.6"/>
+  <text x="49" y="56" text-anchor="middle" font-size="9" fill="#00857a" font-family="Satoshi,sans-serif" font-weight="700">1°</text>
+  <rect x="150" y="50" width="42" height="78" rx="10" fill="white" stroke="#cddbd7" stroke-width="2"/>
+  <rect x="148" y="41" width="46" height="23" rx="9" fill="#e8f5f3" stroke="#00857a" stroke-width="1.6"/>
+  <text x="171" y="56" text-anchor="middle" font-size="9" fill="#00857a" font-family="Satoshi,sans-serif" font-weight="700">1°</text>
+  <path d="M72 58 Q110 30 148 58" fill="none" stroke="#cddbd7" stroke-width="3.5" stroke-linecap="round"/>
+  <rect x="88" y="35" width="44" height="22" rx="9" fill="#ffe0e0" stroke="#f5c6c6" stroke-width="1.6"/>
+  <text x="110" y="50" text-anchor="middle" font-size="9" fill="#c0504d" font-family="Satoshi,sans-serif" font-weight="700">2°</text>
+  <line x1="110" y1="115" x2="110" y2="148" stroke="#7a9992" stroke-width="2.5" stroke-linecap="round"/>
+  <ellipse cx="110" cy="112" rx="6" ry="5" fill="#00857a"/>
+  <g stroke="white" stroke-width="1.2" stroke-linecap="round">
+    <line x1="106" y1="112" x2="106" y2="105"/><line x1="110" y1="111" x2="110" y2="104"/><line x1="114" y1="112" x2="114" y2="105"/>
+  </g>
+</svg>`,
 
-    schedule: `<svg viewBox="0 0 220 160" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <!-- Calendar -->
-      <rect x="30" y="30" width="160" height="115" rx="12" fill="white" stroke="#cddbd7" stroke-width="2"/>
-      <rect x="30" y="30" width="160" height="36" rx="12" fill="#00857a"/>
-      <rect x="30" y="54" width="160" height="12" fill="#00857a"/>
-      <text x="110" y="52" text-anchor="middle" font-size="13" fill="white" font-weight="700" font-family="Satoshi,sans-serif" id="cal-month">APRIL</text>
-      <!-- Calendar grid dots -->
-      <g fill="#cddbd7">
-        <circle cx="58" cy="85" r="4"/><circle cx="86" cy="85" r="4"/><circle cx="114" cy="85" r="4"/><circle cx="142" cy="85" r="4"/><circle cx="170" cy="85" r="4"/>
-        <circle cx="58" cy="108" r="4"/><circle cx="86" cy="108" r="4"/><circle cx="142" cy="108" r="4"/><circle cx="170" cy="108" r="4"/>
-        <circle cx="58" cy="128" r="4"/><circle cx="86" cy="128" r="4"/><circle cx="114" cy="128" r="4"/><circle cx="170" cy="128" r="4"/>
-      </g>
-      <!-- Checkmarks -->
-      <g stroke="#00857a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none">
-        <polyline points="108,80 112,85 120,76"/>
-        <polyline points="136,103 140,108 148,99"/>
-      </g>
-      <!-- Cross (missed) -->
-      <g stroke="#e55" stroke-width="2" stroke-linecap="round">
-        <line x1="108" y1="122" x2="120" y2="134"/>
-        <line x1="120" y1="122" x2="108" y2="134"/>
-      </g>
-    </svg>`
-  };
+        schedule: `<svg viewBox="0 0 220 160" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <rect x="28" y="22" width="164" height="125" rx="13" fill="white" stroke="#cddbd7" stroke-width="2"/>
+  <rect x="28" y="22" width="164" height="40" rx="13" fill="#00857a"/>
+  <rect x="28" y="48" width="164" height="14" fill="#00857a"/>
+  <text x="110" y="46" text-anchor="middle" font-size="14" fill="white" font-weight="700" font-family="Satoshi,sans-serif" id="cal-month">APRIL</text>
+  <g fill="#cddbd7">
+    <circle cx="56" cy="82" r="4.5"/><circle cx="83" cy="82" r="4.5"/><circle cx="110" cy="82" r="4.5"/><circle cx="137" cy="82" r="4.5"/><circle cx="164" cy="82" r="4.5"/>
+    <circle cx="56" cy="107" r="4.5"/><circle cx="83" cy="107" r="4.5"/><circle cx="137" cy="107" r="4.5"/><circle cx="164" cy="107" r="4.5"/>
+    <circle cx="56" cy="130" r="4.5"/><circle cx="83" cy="130" r="4.5"/><circle cx="110" cy="130" r="4.5"/><circle cx="164" cy="130" r="4.5"/>
+  </g>
+  <g stroke="#00857a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <polyline points="104,77 109,83 119,73"/>
+    <polyline points="131,102 136,108 146,98"/>
+  </g>
+  <g stroke="#e55" stroke-width="2.2" stroke-linecap="round">
+    <line x1="104" y1="123" x2="116" y2="137"/>
+    <line x1="116" y1="123" x2="104" y2="137"/>
+  </g>
+</svg>`,
+
+    waterfloss: `<svg viewBox="0 0 220 160" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <rect x="88" y="88" width="34" height="65" rx="9" fill="#1a6fa8" opacity=".8"/>
+  <rect x="92" y="97" width="26" height="9" rx="4.5" fill="#0a4f88" opacity=".5"/>
+  <path d="M105 88 Q105 70 118 60" stroke="#7a9992" stroke-width="3" stroke-linecap="round" fill="none"/>
+  <rect x="116" y="52" width="16" height="10" rx="4" fill="#7a9992"/>
+  <path d="M132 57 Q150 54 162 44" stroke="#1a6fa8" stroke-width="2.5" stroke-dasharray="5 3" stroke-linecap="round" fill="none" opacity=".8"/>
+  <path d="M132 62 Q152 62 166 58" stroke="#1a6fa8" stroke-width="1.8" stroke-dasharray="4 3" stroke-linecap="round" fill="none" opacity=".5"/>
+  <circle cx="168" cy="42" r="4.5" fill="#1a6fa8" opacity=".45"/>
+  <circle cx="174" cy="52" r="3.5" fill="#1a6fa8" opacity=".35"/>
+  <circle cx="170" cy="62" r="2.5" fill="#1a6fa8" opacity=".25"/>
+  <rect x="178" y="35" width="36" height="90" rx="11" fill="white" stroke="#cddbd7" stroke-width="2"/>
+  <rect x="178" y="35" width="36" height="20" rx="7" fill="#e8f5f3"/>
+  <rect x="14" y="18" width="72" height="54" rx="10" fill="#fff3cd" stroke="#ffc107" stroke-width="1.5"/>
+  <text x="50" y="40" text-anchor="middle" font-size="18" font-family="Satoshi,sans-serif">⚠️</text>
+  <text x="50" y="57" text-anchor="middle" font-size="8" fill="#856404" font-family="Satoshi,sans-serif" font-weight="700">DOPOLNILO</text>
+  <text x="50" y="68" text-anchor="middle" font-size="7.5" fill="#856404" font-family="Satoshi,sans-serif">ne nadomestilo</text>
+</svg>`
+    };
 
   /* ── LANGUAGE DATA ── */
   const langs = {
@@ -643,7 +646,34 @@
           body:'Smiselno je, da imate obisk pri ustnem higieniku vsaj enkrat letno. Če se vam zobni kamen ali biofilm nabirata hitreje, pa tudi pogosteje.\n\nNekaterih mest doma preprosto ni mogoče dovolj dobro očistiti, zato je profesionalna kontrola zelo pomembna tudi takrat, ko zobnega kamna skoraj ni.'
         }
       ],
-      note:'Če želite najboljši rezultat doma, naj bo vaša rutina preprosta: vsak dan medzobno čiščenje, nato ščetkanje, redni pregledi in nežna, dosledna tehnika.'
+      note:'Če želite najboljši rezultat doma, naj bo vaša rutina preprosta: vsak dan medzobno čiščenje, nato ščetkanje, redni pregledi in nežna, dosledna tehnika.',
+      electric_title:'Električna zobna ščetka — kdaj resnično pomaga',
+      electric_cards:[
+        {
+          brand:'Philips', icon:'🔵',
+          tag:'Sonična tehnologija',
+          name:'Sonicare',
+          desc:'Deluje z visokofrekvenčnimi vibracijami (do 31 000 udarcev na minuto) in t.i. hidrodinamičnim efektom — tekočina se premika skupaj z ščetinami in doseže mesta, kamor ščetine fizično ne pridejo. Randomizirana klinična preskušanja (RCT) kažejo statistično značilno boljše zmanjšanje plaka in gingivitisa v primerjavi z ročno ščetko.',
+          url:'https://www.philips.si/c-m-pe/sonicare',
+          link_label:'Več o Sonicare'
+        },
+        {
+          brand:'Curaprox', icon:'🟢',
+          tag:'Ultrasoft + sonic',
+          name:'Hydrosonic Pro',
+          desc:'Curaprox je znan po izredno mehkih ščetinah (CUREN vlakna). Hydrosonic Pro združuje sonično tehnologijo z zaščitnimi mehkimi ščetinami — primerna je za občutljive dlesni, odkrite korenine in paciente po parodontalnem zdravljenju. Obsega 3 načine delovanja (medi, sensitive, massage).',
+          url:'https://curaprox.si/elektricne-zobne-scetke',
+          link_label:'Več na curaprox.si'
+        },
+        {
+          brand:'Splošno', icon:'📋',
+          tag:'Kdaj priporoča se',
+          name:'Priporočila za uporabo',
+          desc:'Električna ščetka je posebej priporočljiva pri: mostičkih, fiksnih aparatih, vsadkih, slabši ročni spretnosti (starejši, artritis), hitrem nabiranje plaka in zobnega kamna, po parodontalnem zdravljenju, pri pacientih s suhimi usti. Cochrane-ov sistematični pregled (2014, posodobljen 2022) potrjuje: električne ščetke z rotacijsko-oscilacijsko ali sonično glavo statistično značilno bolje zmanjšajo plak (21 %) in gingivitis (11 %) kot ročne ščetke.',
+          url:'https://www.cochranelibrary.com/cdsr/doi/10.1002/14651858.CD002281.pub3',
+          link_label:'Cochrane pregled'
+        }
+      ],
     },
 
     en: {
@@ -655,7 +685,7 @@
         references_link:'References',
         references_title:'References',
         references_intro:'Key scientific sources and guidelines used for this page.',
-        footer_text:'For any additional questions, consult a gum and prevention specialist (dentist, dental hygienist, periodontist).',
+        footer_text:'For any additional questions, please consult a specialist in gum health and prevention (dentist, oral hygienist, or periodontist).',
         cal_month:'APRIL'
       },
       hero_title:'How to clean your teeth, bridges and dentures every day',
@@ -744,7 +774,13 @@
           body:'It is sensible to see a dental hygienist at least once a year. If tartar or biofilm builds up quickly, you may need visits more often.\n\nSome areas are simply too difficult to clean well at home, so professional monitoring remains important even when there is little tartar.'
         }
       ],
-      note:'For the best home routine, keep it simple: clean between the teeth every day, then brush, attend regular check-ups and use a gentle, consistent technique.'
+      note:'For the best home routine, keep it simple: clean between the teeth every day, then brush, attend regular check-ups and use a gentle, consistent technique.',
+      electric_title:'Electric toothbrush — when it really helps',
+      electric_cards:[
+        { brand:'Philips', icon:'🔵', tag:'Sonic technology', name:'Sonicare', desc:'Operates with high-frequency vibrations (up to 31,000 strokes per minute) and the hydrodynamic effect — fluid moves with the bristles and reaches areas bristles physically cannot. RCTs show statistically significant better plaque and gingivitis reduction vs manual brushing.', url:'https://www.philips.com/c-m-pe/sonicare', link_label:'More about Sonicare' },
+        { brand:'Curaprox', icon:'🟢', tag:'Ultrasoft + sonic', name:'Hydrosonic Pro', desc:'Curaprox is known for ultra-soft CUREN fibres. Hydrosonic Pro combines sonic technology with protective soft bristles — ideal for sensitive gums, exposed roots and post-periodontal patients. Offers 3 modes: medi, sensitive, massage.', url:'https://curaprox.com/electric-toothbrushes', link_label:'More at curaprox.com' },
+        { brand:'General', icon:'📋', tag:'When recommended', name:'Usage recommendations', desc:'Electric toothbrush is especially recommended for:\n• Bridges, fixed appliances, implants\n• Reduced manual dexterity (elderly, arthritis)\n• Fast plaque and tartar build-up\n• After periodontal treatment\n• Dry mouth patients\n\nA Cochrane systematic review confirms: electric brushes with oscillating-rotating or sonic heads significantly reduce plaque (21%) and gingivitis (11%) better than manual brushes.', url:'https://www.cochranelibrary.com/cdsr/doi/10.1002/14651858.CD002281.pub3', link_label:'Cochrane review' }
+      ],
     },
 
     hr: {
@@ -845,7 +881,13 @@
           body:'Preporučuje se posjet dentalnom higijeničaru najmanje jednom godišnje. Ako se zubni kamenac ili biofilm brzo nakupljaju, posjete trebaju biti češće.\n\nNeka mjesta kod kuće jednostavno nije moguće dovoljno dobro očistiti, pa je profesionalna kontrola važna i kada kamenca gotovo nema.'
         }
       ],
-      note:'Za najbolji rezultat kod kuće neka vaša rutina bude jednostavna: svaki dan čišćenje između zuba, zatim četkanje, redoviti pregledi i nježna, dosljedna tehnika.'
+      note:'Za najbolji rezultat kod kuće neka vaša rutina bude jednostavna: svaki dan čišćenje između zuba, zatim četkanje, redoviti pregledi i nježna, dosljedna tehnika.',
+      electric_title:'Električna četkica — kada zaista pomaže',
+      electric_cards:[
+        { brand:'Philips', icon:'🔵', tag:'Sonična tehnologija', name:'Sonicare', desc:'Radi s visokofrekventnim vibracijama (do 31 000 udaraca u minuti) i hidrodinamičkim efektom — tekućina se kreće zajedno s vlaknima i dostiže mjesta gdje vlakna fizički ne mogu. RCT studije potvrđuju statistički značajno bolje smanjenje plaka i gingivitisa u odnosu na ručnu četkicu.', url:'https://www.philips.com/c-m-pe/sonicare', link_label:'Više o Sonicare' },
+        { brand:'Curaprox', icon:'🟢', tag:'Ultrasoft + sonic', name:'Hydrosonic Pro', desc:'Curaprox je poznat po ultra mekim CUREN vlaknima. Hydrosonic Pro kombinira soničnu tehnologiju s mekim zaštitnim vlaknima — idealno za osjetljive desni, otvorene korijenove površine i pacijente nakon parodontnog liječenja.', url:'https://curaprox.si/elektricne-zobne-scetke', link_label:'Više na curaprox.si' },
+        { brand:'Opće', icon:'📋', tag:'Kada se preporuča', name:'Preporuke za korištenje', desc:'Električna četkica posebno je preporučljiva za:\n• Mostove, fiksne aparate, implantate\n• Slabiju motoričku spretnost (stariji, artritis)\n• Brzo nakupljanje plaka i kamenca\n• Nakon parodontnog liječenja\n\nCochrane sustavni pregled potvrđuje: električne četkice značajno bolje smanjuju plak (21%) i gingivitis (11%) od ručnih četkica.', url:'https://www.cochranelibrary.com/cdsr/doi/10.1002/14651858.CD002281.pub3', link_label:'Cochrane pregled' }
+      ],
     },
 
     sr: {
@@ -958,7 +1000,7 @@
         references_link:'Quellen',
         references_title:'Quellen',
         references_intro:'Wissenschaftliche Quellen und Leitlinien dieser Seite.',
-        footer_text:'Bei allen weiteren Fragen wenden Sie sich bitte an eine Fachperson (Zahnarzt, Dentalhygieniker, Parodontologe).',
+        footer_text:'Bei weiteren Fragen wenden Sie sich bitte an einen Spezialisten für Zahnfleisch und Prävention (Zahnarzt, Dentalhygieniker oder Parodontologe).',
         cal_month:'APRIL'
       },
       hero_title:'So reinigen Sie täglich Ihre Zähne, Brücken und Prothesen',
@@ -1059,7 +1101,7 @@
         references_link:'Riferimenti',
         references_title:'Riferimenti',
         references_intro:'Principali fonti scientifiche e linee guida su cui si basa questa pagina.',
-        footer_text:'Per qualsiasi ulteriore domanda, consultare uno specialista delle gengive e della prevenzione (dentista, igienista dentale, parodontologo).',
+        footer_text:'Per qualsiasi domanda aggiuntiva, si prega di consultare uno specialista in salute gengivale e prevenzione (dentista, igienista orale o parodontologo).',
         cal_month:'APRILE'
       },
       hero_title:'Come pulire ogni giorno denti, ponti e protesi',
@@ -1160,7 +1202,7 @@
         references_link:'Referencat',
         references_title:'Referencat',
         references_intro:'Burimet kryesore shkencore dhe udhëzimet mbi të cilat bazohet kjo faqe.',
-        footer_text:'Për çdo pyetje shtesë konsultohuni me një specialist të mishrave të dhëmbëve dhe të parandalimit.',
+        footer_text:'Për çdo pyetje shtesë, ju lutemi konsultohuni me një specialist të shëndetit gingival dhe parandalimit (dentist, higienist oral ose parodontolog).',
         cal_month:'PRILL'
       },
       hero_title:'Si t\'i pastroni çdo ditë dhëmbët, urat dhe protezat',
@@ -1203,7 +1245,7 @@
         references_link:'المراجع',
         references_title:'المراجع',
         references_intro:'أهم المصادر العلمية والإرشادات المعتمدة في هذه الصفحة.',
-        footer_text:'لأي أسئلة إضافية يجب استشارة مختص بأمراض اللثة والوقاية.',
+        footer_text:'لأي أسئلة إضافية، يُرجى استشارة متخصص في صحة اللثة والوقاية (طبيب أسنان، أخصائي نظافة الفم، أو أخصائي أمراض اللثة).',
         cal_month:'أبريل'
       },
       hero_title:'كيف تنظف أسنانك والجسور والأطقم يومياً',
@@ -1246,7 +1288,7 @@
         references_link:'Референци',
         references_title:'Референци',
         references_intro:'Главни научни извори и насоки на кои се темели оваа страница.',
-        footer_text:'За сите дополнителни прашања консултирајте се со стручно лице за непца и превенција.',
+        footer_text:'За сите дополнителни прашања консултирајте се со специјалист за здравјето на непцата и превенцијата (стоматолог, орален хигиеничар или пародонтолог).',
         cal_month:'АПРИЛ'
       },
       hero_title:'Како секој ден правилно да ги чистите забите, мостовите и протезите',
@@ -1283,7 +1325,7 @@
         references_link:'Hivatkozások',
         references_title:'Hivatkozások',
         references_intro:'A lap alapjául szolgáló fő tudományos források és irányelvek.',
-        footer_text:'További kérdések esetén forduljon fogorvoshoz, dentálhigiénikushoz vagy parodontológushoz.',
+        footer_text:'Bármilyen további kérdés esetén forduljon fogíny-egészségügyi és megelőzési szakemberhez (fogorvos, szájhigiénikus vagy parodontológus).',
         cal_month:'ÁPRILIS'
       },
       hero_title:'Hogyan tisztítsa meg naponta fogait, hídjait és protézisét',
@@ -1320,7 +1362,7 @@
         references_link:'Источники',
         references_title:'Источники',
         references_intro:'Основные научные источники и рекомендации, использованные на этой странице.',
-        footer_text:'По всем дополнительным вопросам обратитесь к стоматологу, гигиенисту или пародонтологу.',
+        footer_text:'По всем дополнительным вопросам обращайтесь к специалисту по здоровью дёсен и профилактике (стоматологу, гигиенисту полости рта или пародонтологу).',
         cal_month:'АПРЕЛЬ'
       },
       hero_title:'Как правильно чистить зубы, мосты и протезы каждый день',
@@ -1357,7 +1399,7 @@
         references_link:'Джерела',
         references_title:'Джерела',
         references_intro:'Основні наукові джерела та рекомендації, використані на цій сторінці.',
-        footer_text:'З усіх додаткових питань звертайтеся до стоматолога, гігієніста або пародонтолога.',
+        footer_text:'З усіх додаткових питань звертайтеся до спеціаліста з охорони здоров\u2019я ясен та профілактики (стоматолога, гігієніста порожнини рота або пародонтолога).',
         cal_month:'КВІТЕНЬ'
       },
       hero_title:'Як щодня правильно чистити зуби, мости та протези',
@@ -1448,6 +1490,22 @@
           desc: 'Posebej oblikovana ščetka z dvema vrstama ščetin za čiščenje vseh površin proteze — zunanjih in notranjih. Primerna za dnevno čiščenje skupaj z BDC gelom.',
           url: 'https://curaprox.si/izdelki-po-potrebah/nega-zobnih-protez-in-vsadkov/scetka-za-ciscenje-proteze-bdc-p652#/254-bdc_brush_colors-bela',
           link_label: 'Več na curaprox.si'
+        },
+        {
+          brand: 'GABA / Meridol', icon: '🌸',
+          tag: 'Vnetje dlesni – brez SLS',
+          name: 'Meridol zobna pasta',
+          desc: 'Meridol pasta vsebuje aminofluorid in olafluor (SnF₂/AmF), ki klinično dokazano zmanjšujeta gingivitis in krvavenje. Posebej primerna je za občutljive dlesni, ker ne vsebuje natrijevega laurilsulfata (SLS) — peniče brez draži, ki je pri nekaterih pacientih vzrok za draženje ali aftne razjede.',
+          url: 'https://www.meridol.si/',
+          link_label: 'Več na meridol.si'
+        },
+        {
+          brand: 'Haleon / Parodontax', icon: '🔴',
+          tag: 'Dlesni + krvavenje',
+          name: 'Parodontax zobna pasta',
+          desc: 'Parodontax vsebuje 67 % natrijevega bikarbonata in fluor. Bikarbonát deluje rahlo abrazivno in pomaga pri mehanskem odstranjevanju biofilma ob dlesni. Klinično je dokazano, da redno 12-tedensko čiščenje s Parodontaxom statistično značilno zmanjša krvavenje dlesni.',
+          url: 'https://www.parodontax.si/',
+          link_label: 'Več na parodontax.si'
         }
       ]
     },
@@ -1468,7 +1526,9 @@
         { brand:'Curaprox', icon:'🌿', tag:'Gum inflammation', name:'Perio Plus Support (paste)', desc:'Toothpaste with 0.09% chlorhexidine and active oxygen for short-term support when soothing inflamed gums. Best used together with a Perio Plus mouthrinse.', url:'https://curaprox.si/zobne-paste/posebne-zobne-paste-in-ustne-vode/zobna-pasta-perio-plus-support-75-ml-p269', link_label:'More at curaprox.si' },
         { brand:'Curaprox', icon:'💧', tag:'Gum inflammation', name:'Perio Plus mouthrinses (4 strengths)', desc:'A range of four mouthrinses with varying chlorhexidine concentrations — from maintenance to intensive care. Strength is chosen based on inflammation severity and professional advice.', url:'https://curaprox.si/info/uporabni-pripomocki/perio-plus', link_label:'View the collection' },
         { brand:'Curaprox', icon:'🪥', tag:'Denture care', name:'BDC daily gel for dentures', desc:'Gentle daily gel for mechanical denture cleaning. Contains no abrasive particles and does not scratch the smooth denture surface — which is key for preventing future plaque build-up.', url:'https://curaprox.si/izdelki-po-potrebah/nega-zobnih-protez-in-vsadkov/bdc-100-dnevni-gel-p23', link_label:'More at curaprox.si' },
-        { brand:'Curaprox', icon:'🫧', tag:'Denture care', name:'BDC denture brush', desc:'Specially designed brush with two types of bristles for cleaning all denture surfaces — inside and out. Ideal for daily use together with BDC gel.', url:'https://curaprox.si/izdelki-po-potrebah/nega-zobnih-protez-in-vsadkov/scetka-za-ciscenje-proteze-bdc-p652#/254-bdc_brush_colors-bela', link_label:'More at curaprox.si' }
+        { brand:'Curaprox', icon:'🫧', tag:'Denture care', name:'BDC denture brush', desc:'Specially designed brush with two types of bristles for cleaning all denture surfaces — inside and out. Ideal for daily use together with BDC gel.', url:'https://curaprox.si/izdelki-po-potrebah/nega-zobnih-protez-in-vsadkov/scetka-za-ciscenje-proteze-bdc-p652#/254-bdc_brush_colors-bela', link_label:'More at curaprox.si' },
+        { brand:'GABA / Meridol', icon:'🌸', tag:'Gum inflammation – no SLS', name:'Meridol toothpaste', desc:'Meridol contains aminofluoride and stannous fluoride (SnF₂/AmF), clinically proven to reduce gingivitis and bleeding. Especially suitable for sensitive gums because it contains no sodium lauryl sulphate (SLS) — it foams without irritating, which for some patients is the trigger for gum irritation or aphthous ulcers.', url:'https://www.meridol.com/', link_label:'More at meridol.com' },
+        { brand:'Haleon / Parodontax', icon:'🔴', tag:'Gums + bleeding', name:'Parodontax toothpaste', desc:'Parodontax contains 67% sodium bicarbonate and fluoride. Bicarbonate acts as a mild abrasive, helping mechanical biofilm removal along the gumline. Clinically proven: regular 12-week use significantly reduces gum bleeding.', url:'https://www.parodontax.com/', link_label:'More at parodontax.com' }
       ]
     },
     hr: {
@@ -1517,38 +1577,114 @@
     if(!PRODUCTS[c]) PRODUCTS[c] = PRODUCTS.sl;
   });
 
-  /* Dialectal variants inherit from Slovenian */
-  ['st','ko','pr','pm','lj'].forEach(code => {
-    const titleMap = {
-      st:'Kak si vsak dan dobro spucaš zobe, mostiček pa protezo',
-      ko:'Kak si vsak dan dobro spucaš zobe, most pa protezo',
-      pr:'Kako si vsak dan dobro umiješ zobe, mostiček in protezo',
-      pm:'Kak si vsak den dobro spucaš zobe, mostek pa protezo',
-      lj:'Kako si vsak dan dobro spucaš zobe, mostiček in protezo'
-    };
-    const subMap = {
-      st:'mostički, medzobni prostori pa proteze',
-      ko:'mosti, medzobni prostori pa proteze',
-      pr:'mostički, medzobni prostori in proteze',
-      pm:'mosteki, medzobni prostori pa proteze',
-      lj:'mostički, medzobni prostori in proteze'
-    };
-    const ql1 = {
-      st:'Na kratko', ko:'Na kratko', pr:'Na kratko', pm:'Na kratko', lj:'Na kratko'
-    };
+  /* ── DIALECTAL VARIANTS ── hero + quicklist only, rest inherits SL */
+
+  (function() {
     const base = langs.sl;
-    langs[code] = JSON.parse(JSON.stringify(base));
-    langs[code].htmlLang = 'sl';
-    langs[code].ui.brand_sub = subMap[code];
-    langs[code].hero_title = titleMap[code];
-    langs[code].quicklist_title = ql1[code];
-  });
+
+    // Helper: deep clone SL and override only specific fields
+    function makeDialect(overrides) {
+      const d = JSON.parse(JSON.stringify(base));
+      d.htmlLang = 'sl';
+      Object.assign(d, overrides);
+      Object.assign(d.ui, overrides.ui || {});
+      return d;
+    }
+
+    langs.st = makeDialect({
+      ui: {
+        brand_sub: 'mostički, mežzobne luknje pa proteze',
+        footer_text: base.ui.footer_text // same SL footer
+      },
+      hero_title: 'Kak si vsak dan dobro spucaš zobe, mostičke pa protezo',
+      hero_lede: 'Ta navodila so napisana ravno za vas. Namen je, da doma lažje in pravilno počistite mesta, kjer se biofilm najhitreje nabira: med zobmi, pod mostičkim, na protezi pa ob dlesni.',
+      quicklist_title: 'Najkrajša verzija',
+      quicklist: [
+        'Zobe spucajte 2× na dan z mehko ščetko.',
+        'Med zobmi čistite vsak dan z mežzobno ščetko ali nitko.',
+        'Pod mostičkim vsak dan superfloss.',
+        'Protezo vsak dan snemite, očistite pa po potrebi namočite v namensko čistilo.',
+        'Če krvavenje ali občutljivost ne mineta v 2 tednih, naročite se na pregled.'
+      ]
+    });
+
+    langs.ko = makeDialect({
+      ui: {
+        brand_sub: 'mosti, mezdozubni prostori pa proteze',
+        footer_text: base.ui.footer_text
+      },
+      hero_title: 'Ka si vsak dan dobro spucaš zobe, most pa protezo',
+      hero_lede: 'Ta navodila so napisana ravno za vas. Namen je, da doma lažje in pravilno očistite mesta, kjer se biofilm najhitreje nabira: med zobmi, pod mostom, na protezi pa ob dlesni.',
+      quicklist_title: 'Najkrajša verzija',
+      quicklist: [
+        'Zobe ščetkajte 2× na dan z mehko ščetko.',
+        'Med zobmi čistite vsak dan z mezdozubno ščetko ali nitko.',
+        'Pod mostom vsak dan superfloss.',
+        'Protezo vsak dan snemite, očistite pa po potrebi namočite v namensko čistilo.',
+        'Če krvavenje ali občutljivost ne mineta v 2 tednih, se naročite na pregled.'
+      ]
+    });
+
+    langs.pr = makeDialect({
+      ui: {
+        brand_sub: 'mostički, medzobni prostori in proteze',
+        footer_text: base.ui.footer_text
+      },
+      hero_title: 'Kako si vsak dan dobro umiješ zobe, mostičke in protezo',
+      hero_lede: 'Ta navodila so napisana neposredno za vas. Namen je, da doma lažje in pravilno umiješ mesta, kjer se biofilm najhitreje nabira: med zobmi, pod mostički, na protezi in ob dlesni.',
+      quicklist_title: 'Najkrajša verzija',
+      quicklist: [
+        'Zobe ščetkajte 2× na dan z mehko ščetko.',
+        'Med zobmi čistite vsak dan z medzobno ščetko ali nitko.',
+        'Pod mostičkom vsak dan superfloss.',
+        'Protezo vsak dan snemite, očistite in po potrebi namočite v namensko čistilo.',
+        'Če krvavenje ali občutljivost ne mineta v 2 tednih, se naročite na pregled.'
+      ]
+    });
+
+    langs.pm = makeDialect({
+      ui: {
+        brand_sub: 'mosteki, mezdenzobni prostori pa proteze',
+        footer_text: base.ui.footer_text
+      },
+      hero_title: 'Kak si vsak den dobro spücaš zobe, mostek pa protezo',
+      hero_lede: 'Ta navodila so napisana ravno za vas. Namen je, da doma lažje in pravilno počistite mesta, kjer se biofilm najhitreje nabira: med zobmi, pod mostekom, na protezi pa ob dlesni.',
+      quicklist_title: 'Najkrajša verzija',
+      quicklist: [
+        'Zobe spücajte 2× na den z mehko ščetko.',
+        'Med zobmi čistite vsak den z mezdenzobno ščetko ali nitko.',
+        'Pod mostekom vsak den superfloss.',
+        'Protezo vsak den snemite, počistite pa po navodilih namočite v namensko čistilo.',
+        'Če krvavenje ali občutljivost ne mineta v 2 tednih, se naročite na pregled.'
+      ]
+    });
+
+    langs.lj = makeDialect({
+      ui: {
+        brand_sub: 'mostički, medzobni prostori in proteze',
+        footer_text: base.ui.footer_text
+      },
+      hero_title: 'Kako si vsak dan dobro očistite zobe, mostičke in proteze',
+      hero_lede: 'Ta navodila so napisana neposredno za vas. Cilj je, da doma lažje in pravilno počistite mesta, kjer se biofilm najhitreje nabira: med zobmi, pod mostički, na protezah in ob dlesni.',
+      quicklist_title: 'Najkrajša verzija',
+      quicklist: [
+        'Zobe ščetkajte 2× na dan z mehko ščetko.',
+        'Med zobmi čistite vsak dan z medzobno ščetko ali nitko.',
+        'Pod mostičkom vsak dan superfloss.',
+        'Protezo vsak dan snemite, očistite in po potrebi namočite v namensko čistilo.',
+        'Če krvavenje ali občutljivost ne mineta v 2 tednih, se naročite na pregled.'
+      ]
+    });
+  })();
 
   /* ── REFERENCES HTML ── */
   const refHTML = `<section class="container" id="reference" style="padding-bottom:2rem">
-    <div class="card">
-      <h2 id="references_title">Reference</h2>
-      <p class="lede" id="references_intro" style="margin-bottom:1rem"></p>
+    <details class="ref-accordion">
+      <summary>
+        <span id="references_title">Reference</span>
+        <svg class="ref-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+      </summary>
+      <p class="lede" id="references_intro" style="margin:0.8rem 0 1rem"></p>
       <div class="reference-list">
         ${[
           ['Home use of interdental cleaning devices, in addition to toothbrushing','https://pmc.ncbi.nlm.nih.gov/articles/PMC6953268/'],
@@ -1566,7 +1702,7 @@
           ['Effect of denture cleaning on abrasion resistance','https://pmc.ncbi.nlm.nih.gov/articles/PMC5498689/']
         ].map(([t,u])=>`<div class="reference-item"><strong>${t}</strong><br><a href="${u}" target="_blank" rel="noopener noreferrer">${u}</a></div>`).join('')}
       </div>
-    </div>
+    </details>
   </section>`;
 
 
@@ -1598,13 +1734,28 @@
 
   function buildProductsSection(langCode) {
     const pd = PRODUCTS[langCode] || PRODUCTS.sl;
+    const sl = PRODUCTS.sl;
+    const ld = langs[langCode] || langs.sl;   // lang data for electric/water
+    const ldSl = langs.sl;
+    const indivPlan = INDIV_PLAN[langCode] || INDIV_PLAN.sl;
+    const indivBodyHTML = indivPlan.body.split('\n\n').map(p=>`<p>${p}</p>`).join('');
+    const indivHTML = `<div class="note indiv-plan-note" style="margin-top:1.6rem;display:flex;gap:1.2rem;align-items:flex-start"><div style="flex-shrink:0;width:52px;height:52px;background:var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/><path d="M16 3.13a4 4 0 010 7.75"/><path d="M21 21v-2a4 4 0 00-3-3.87"/></svg></div><div><h3 style="margin-bottom:.4rem">${indivPlan.title}</h3>${indivBodyHTML}</div></div>`;
     const productsHTML = pd.products.map(buildProductCard).join('');
     const flossRowsHTML = pd.floss_rows.map(r => buildFlossRow(r)).join('');
-    const flossHeadHTML = pd.floss_cols.map(c=>`<th>${c}</th>`).join('');
+    const flossHeadHTML = pd.floss_cols.map(col=>`<th>${col}</th>`).join('');
+    // Electric cards (from langs, not PRODUCTS)
+    const elCards = ld.electric_cards || ldSl.electric_cards || [];
+    const elTitle  = ld.electric_title || ldSl.electric_title || '';
+    const elHTML = elCards.map(buildProductCard).join('');
+    // Water flosser section removed
+    // Video labels
+    const vTitle = pd.video_title || sl.video_title || '';
+    const vSub   = pd.video_sub   || sl.video_sub   || '';
     return `
       <section class="products-section container">
         <h2>${pd.section_title}</h2>
         <div class="product-grid">${productsHTML}</div>
+
         <h3 style="margin-top:2rem;margin-bottom:.6rem">${pd.floss_title}</h3>
         <div class="floss-guide">
           <table>
@@ -1612,19 +1763,43 @@
             <tbody>${flossRowsHTML}</tbody>
           </table>
         </div>
-        <a class="video-banner" href="https://curaprox.si/blog/post/video-navodila" target="_blank" rel="noopener noreferrer">
+
+        <h3 style="margin-top:2rem;margin-bottom:.8rem">${elTitle}</h3>
+        <div class="product-grid">${elHTML}</div>
+
+
+
+        ${indivHTML}
+
+                <a class="video-banner" href="https://curaprox.si/blog/post/video-navodila" target="_blank" rel="noopener noreferrer">
           <div class="video-play" aria-hidden="true">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><polygon points="5 3 19 12 5 21 5 3"/></svg>
           </div>
           <div class="video-text">
-            <strong>${pd.video_title}</strong>
-            <span>${pd.video_sub}</span>
+            <strong>${vTitle}</strong>
+            <span>${vSub}</span>
           </div>
           <svg style="margin-left:auto;flex-shrink:0;color:var(--accent)" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
         </a>
+
       </section>
     `;
   }
+
+  const INDIV_PLAN = {
+    sl: { title: 'Individualni načrt ustne higiene', body: 'Nobena metoda ni primerna za vsakogar — velikost medzobnih ščetk, vrsta nitke in zaporedje čiščenja so odvisni od oblike vaših zob, prisotnosti mostov, vsadkov ali protez ter od stanja vaših dlesen.\n\nUstni higienik v sodelovanju z zobozdravnikom ali parodontologom pripravi individualni načrt, ki upošteva prav vašo situacijo.' },
+    en: { title: 'Your personalised oral hygiene plan', body: 'No single method suits everyone — the right brush size, floss type, and cleaning order depend on the shape of your teeth, the presence of bridges, implants or dentures, and the condition of your gums.\n\nA dental hygienist, working with your dentist or periodontist, will create a personalised plan tailored to your specific situation. One size does not fit all — your plan is yours.' },
+    hr: { title: 'Vaš individualni plan oralne higijene', body: 'Niti jedna metoda nije za svakoga — veličina interdentalne četke, vrsta konca i redoslijed čiščenja ovise o obliku vaših zuba, prisutnosti mostova, implantata ili proteza te stanju vaših desni.\n\nDentalni higijeničar, u suradnji s vašim stomatologom ili parodontologom, izraduje individualni plan prilagodena vašoj situaciji. Jedno uputstvo ne odgovara svima — vaš plan je vaš.' },
+    sr: { title: 'Vaš individualni plan oralne higijene', body: 'Nijedna metoda nije za svakoga — veličina interdentalne četke, vrsta konca i redosled čišćenja zavise od oblika vaših zuba, prisustva mostova, implantata ili proteza i stanja vaših desni.\n\nDentalni higijeničar, u saradnji sa vašim stomatologom ili parodontologom, pravi individualni plan prilagodena vašoj situaciji. Jedno uputstvo ne odgovara svima — vaš plan je vaš.' },
+    de: { title: 'Ihr persönlicher Mundhygieneplan', body: 'Nicht jede Methode ist für jeden geeignet — die richtige Bürstengröße, die Art des Zahnseids und die Reinigungsreihenfolge hängen von der Form Ihrer Zähne, dem Vorhandensein von Brücken, Implantaten oder Prothesen sowie dem Zustand Ihres Zahnfleisches ab.\n\nEine Dentalhygienikerin, die mit Ihrem Zahnarzt oder Parodontologen zusammenarbeitet, erstellt einen individuellen Plan, der genau auf Ihre Situation zugeschnitten ist. Eine Größe passt nicht für alle — Ihr Plan gehört Ihnen.' },
+    it: { title: 'Il tuo piano personalizzato di igiene orale', body: 'Non esiste un metodo unico per tutti — la dimensione dello scovolino, il tipo di filo e l’ordine della pulizia dipendono dalla forma dei tuoi denti, dalla presenza di ponti, impianti o protesi e dalle condizioni delle tue gengive.\n\nL’igienista dentale, in collaborazione con il dentista o il parodontologo, elabora un piano personalizzato su misura per la tua situazione. Una soluzione non va bene per tutti — il tuo piano è il tuo.' },
+    sq: { title: 'Plani juaj individual i higiënës me gojë', body: 'Asnjë metodë nuk i përshtatet të gjithëve — madhësia e furçës ndërdentale, lloji i perit dhe radha e pastrimit varen nga forma e dhëmbëve tuaj, prania e urave, implanteve ose protezave dhe gjendja e mishrave të dhëmbëve.\n\nHigienisti dentar, në bashkëpunim me dentistin ose parodontologun tuaj, krijon një plan individual të përshtatur për situatën tuaj specifike. Një udhëzim nuk u përshtatet të gjithëve — plani juaj është yni.' },
+    ar: { title: 'خطتك الشخصية لنظافة الفم', body: 'لا تناسب طريقة واحدة الجميع — حجم فرشاة التنظيف بين الأسنان ونوع الخيط وتسلسل التنظيف يعتمد على شكل أسنانك ووجود جسور أو غرسات أو طقام وحالة لثتك.\n\nمنظف الأسنان ، بالتعاون مع طبيبك أو طبيب أمراض اللثة، يضع خطة فردية مصممة لوضعك تحديداً. خطتك خاصة بك.' },
+    mk: { title: 'Вашиот индивидуален план за усна хигиена', body: 'Ниту еден метод не одговара за секого — големината на меѓузабната четка, видот на конецот и редоследот на чистење зависат од формата на вашите заби, присуството на мостови, импланти или протези и состојбата на вашите венци.\n\nДенталниот хигиеничар, во соработка со вашиот стоматолог или пародонтолог, израбува индивидуален план соодветен за вашата ситуација. Едно упатство не одговара за секого — вашиот план е ваш.' },
+    hu: { title: 'Személyre szabott szájhigiéniai terve', body: 'Nem minden módszer megfelelő mindenki számára — a fogközti kefe mérete, a fogselyem típusa és a tisztítás sorrendje az Ön fogainak alakjától, a hidak, implantátumok vagy fogsor jelenlététől, valamint a fogínye állapotától függ.\n\nA fogászati higiénikus, az Ön fogorvosával vagy periodontológusával együttműködve, az Ön egyedi helyzetéhez szabott egyéni tervet dolgoz ki. Egy megoldás nem illik mindenkire — az Ön terve az Öné.' },
+    ru: { title: 'Ваш индивидуальный план гигиены полости рта', body: 'Не каждый метод подходит всем — размер межзубной щётки, вид нити и порядок чистки зависят от формы ваших зубов, наличия мостов, имплантов или протезов, а также состояния дёсен.\n\nГигиенист полости рта, работая вместе с вашим стоматологом или пародонтологом, составит индивидуальный план, подобранный именно под вашу ситуацию. Одна инструкция не подходит всем — ваш план — ваш.' },
+    uk: { title: 'Ваш індивідуальний план гігієни порожнини рота', body: 'Жоден метод не підходить для всіх — розмір міжзубної щітки, тип нитки та порядок чищення залежать від форми ваших зубів, наявності мостів, імплантів чи протезів і стану ясен.\n\nГігієніст порожнини рота, співпрацюючи з вашим стоматологом чи пародонтологом, складає індивідуальний план, адаптований до вашої ситуації. Одна порада не підходить для всіх — ваш план — ваш.' }
+  };
 
   /* ── RENDER ENGINE ── */
   function buildCard(c, size) {
@@ -1659,7 +1834,6 @@
     document.getElementById('brand_title').textContent    = ui.brand_title;
     document.getElementById('brand_sub').textContent      = ui.brand_sub;
     document.getElementById('language_label').textContent = ui.language_label;
-    document.getElementById('references_link').textContent= ui.references_link;
     document.getElementById('footer_text').textContent    = ui.footer_text;
 
     // Build page
